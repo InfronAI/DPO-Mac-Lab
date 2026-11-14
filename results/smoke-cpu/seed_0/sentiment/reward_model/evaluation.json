@@ -1,0 +1,4 @@
+{
+  "heldout_accuracy": 1.0,
+  "selection": "final epoch; no validation tuning in scaled profile"
+}

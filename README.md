@@ -1,136 +1,253 @@
-# DPO: Direct Preference Optimization
+# DPO Mac Lab
 
-**New:** in addition to the original DPO algorithm, this repo now supports ['conservative' DPO](https://ericmitchell.ai/cdpo.pdf) and [IPO](https://arxiv.org/pdf/2310.12036.pdf).
+**English** | [简体中文](README.zh-CN.md)
 
-For conservative DPO, you just need to additionally pass the parameter `loss.label_smoothing=X` for some `X` between 0 and 0.5 when performing DPO training (0 gives the original DPO loss). This parameter is essentially the conservativeness parameter, i.e., the fraction of the training preference data that is incorrect (flipped preference direction). Starting with something like 0.1 might be reasonable, but I haven't tested this yet (and it will depend on the preference dataset).
+An end-to-end Direct Preference Optimization toolkit for Apple Silicon, preserving the original DPO objective with MPS-accelerated training, reproducible experiments, baseline comparisons, and evaluation.
 
-For IPO, just pass `loss=ipo` and `loss.beta=X` for some non-negative `X` (same as with DPO/conservative DPO).
+Train a language model from preferences on an M1 Mac: **supervised fine-tuning → frozen reference → DPO → evaluation**, with full-parameter updates and reproducible local artifacts.
 
-## What is this repo?
+Based on [Direct Preference Optimization: Your Language Model is Secretly a Reward Model](https://arxiv.org/abs/2305.18290). The original Hydra training interface, cDPO/IPO extensions, and distributed trainers remain available. [Original README](docs/UPSTREAM_README.md) · [Architecture](docs/ARCHITECTURE.md) · [Paper coverage audit](docs/PAPER_REPRODUCTION.md).
 
-This repo includes a reference implementation of the DPO algorithm for training language models from preference data, as described in the paper [Direct Preference Optimization: Your Language Model is Secretly a Reward Model](https://arxiv.org/abs/2305.18290).
+> **Scope:** the M1 profile runs reduced public-data experiments. It does **not** reproduce the paper's full model sizes, numerical tables, historical GPT-4 judgments, or human study. Synthetic smoke tests are labeled separately. See the coverage audit for every remaining gap.
 
-The code here supports any causal HuggingFace model- look at our examples in `config/model` to add your own. Adding your own datasets is also easy. See [the README section](https://github.com/huggingface/peft) on adding datasets.
+## Demo
 
-The DPO pipeline has two stages:
+[![Actual terminal recording of SFT, DPO and evaluation](docs/media/demo.gif)](docs/media/demo.mp4)
 
-1. Run supervised fine-tuning (SFT) on the dataset(s) of interest.
-2. Run preference learning on the model from step 1, using preference data (ideally from the same distribution as the SFT examples).
+**[Watch / download the MP4](docs/media/demo.mp4)** · [Terminal recording](docs/media/demo.cast) · [Recording metadata](docs/media/demo.json)
 
-The files in this repo are:
-- `train.py`: the main entry point for training (either SFT or DPO preference-based training)
-- `trainers.py`: the trainer classes (e.g., implementing the loop of learning as well as multi-GPU logic)
-- `utils.py`: some convenience functions used by multiple other files
-- `preference_datasets.py`: dataset processing logic for both SFT and DPO preference-based training; **this is where you'll need to make some additions to train on your own data**
+The recording first executes all three task pipelines with **synthetic fixtures and a tiny random transformer**, then loads **real GPT-2 checkpoints trained on public data** and generates new continuations. It uses 2× playback. Fixture scores and public-data measurements are clearly separated; neither is a claim of paper-level quality. The linked MP4 works in a video player; the GIF provides an inline preview where README video tags are unsupported.
 
-## Running SFT
+## Quick start on M1
 
-For DPO, the SFT stage essentially ensures that the preference data we train on is in-distribution for our policy before we actually do the learning from preferences part.
+Run the following commands from the repository root.
 
-Run SFT for Pythia 6.9B on Anthropic-HH data with batch size 64:
+Validated hardware: **Apple M1 Pro, 16 GB unified memory, native arm64 Python 3.11, macOS 26.6.1**. Use a recent macOS supported by the pinned PyTorch build; CPU is also supported. No CUDA, W&B login, paid API, quantization library, or model service is required.
 
-    python -u train.py model=pythia69 datasets=[hh] loss=sft exp_name=anthropic_dpo_pythia69 gradient_accumulation_steps=2 batch_size=64 eval_batch_size=32 trainer=FSDPTrainer sample_during_eval=false
+```bash
+python3.11 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python -m pip install -e . --no-deps
+python -m dpo_lab doctor
+```
 
-Run SFT for a custom model (for example, Llama at a local path) on Anthropic-HH + Stanford Human Preference data with batch size 64:
+`doctor` should report `machine: arm64`, `mps_available: true`, and `device: mps`. Dependencies are pinned; the complete tested environment is in [requirements-lock-macos-arm64.txt](requirements-lock-macos-arm64.txt).
 
-    python -u train.py model=blank_model model.name_or_path=/PATH/TO/LLAMA/WEIGHTS model.block_name=LlamaDecoderLayer datasets=[hh,shp] loss=sft exp_name=anthropic_shp_sft_llama_7b gradient_accumulation_steps=2 batch_size=64 eval_batch_size=32 trainer=FSDPTrainer sample_during_eval=false
+Run the entire small offline workflow, then generate its report:
 
-> Note: Since we're not using one of our predefined model configs, we also need to pass `model.block_name` to tell FSDP what modules to wrap.
+```bash
+python -m dpo_lab run --config experiments/smoke.json --output artifacts/my-smoke
+python -m dpo_lab report artifacts/my-smoke
+```
 
-By default, evaluation will run every 20k **examples**. You can change this arg with `eval_every` arg. If you don't pass `sample_during_eval=false`, sampling will happen during each eval as well.
+The smoke profile builds its own tokenizer/model and uses explicitly synthetic data. After installing dependencies it needs no network. Choose a new output path for a new run. Add `--device cpu` to test the CPU path; `--device mps` requires a working Metal device and fails explicitly if unavailable.
 
-To run a different model, either add a new model config to `config/model`, or use the `blank_model` option for `model` and pass `model.name_or_path` (and `model.block_name` if training with FSDP trainer) explicitly. For example, for GPT-2, this would look like:
-    
-    python -u train.py ... model=blank_model model.name_or_path=gpt2-xl model.block=GPT2Block
+## Real public-data experiments
 
-## Running DPO
+```bash
+# Download only the bounded dataset selections; record revisions and hashes.
+python -m dpo_lab prepare --config experiments/mac.json --output artifacts/public-data
 
-To run DPO, use the same command as SFT, but pass `loss=dpo`, `loss.beta=DESIRED_BETA` (0.1-0.5 is a good starting point), and `model.archive=/path/to/checkpoint/from/sft/step-XXXX/policy.pt`. If SFT completed successfully, you should also have a `/.../LATEST/policy.pt` from the end of training.
+# Train and evaluate sequentially on this Mac.
+python -m dpo_lab run --config experiments/mac.json \
+  --data artifacts/public-data --output artifacts/my-public-run --device mps
 
-Run DPO on Pythia 6.9B with effective batch size 64:
+# Create Markdown, CSV, aggregate JSON and figures.
+python -m dpo_lab report artifacts/my-public-run
+```
 
-    python -u train.py model=pythia69 datasets=[hh] loss=dpo loss.beta=0.1 model.archive=/path/to/checkpoint/from/sft/step-XXXX/policy.pt exp_name=anthropic_dpo_pythia69 gradient_accumulation_steps=2 batch_size=32 eval_batch_size=32 trainer=FSDPTrainer sample_during_eval=false
+Initial use downloads public model weights and dataset files. Models are cached by Hugging Face. Large checkpoints remain on disk and are ignored by Git; raw selected data, metrics, reports, configuration and evaluation samples are retained in the run directory. Public datasets can contain sensitive or offensive material; generated text is unfiltered research output.
 
-> Note: `eval_every` is measured in **examples**.
+| Setting | M1 public profile |
+|---|---|
+| Causal model | Pythia-70M-deduped; full parameters, FP32 |
+| Tasks | IMDb sentiment, TL;DR summarization, HH single-turn dialogue |
+| Additional evaluation | CNN/DailyMail summarization distribution shift |
+| Training seeds | 0, 1, 2; fixed data-selection seed 42 |
+| Selected source examples | 64 training / 16 held-out per task |
+| Sentiment preferences | 16 prefixes × 4 SFT samples; up to 96 pairs per split |
+| Context / generation | 128 total tokens; prompt ≤88; generation ≤24 |
+| Logical / micro batch | 4 / 1 |
+| Training | One SFT and one preference epoch; RMSprop |
+| DPO β | Sentiment: 0.05, 0.1, 1, 5; summaries: 0.5; dialogue: 0.1 |
+| Baselines / extensions | Base, SFT, Preferred-FT, cDPO, IPO, reference-free, PPO, Best-of-1/4; sentiment also unlikelihood and PPO-GT |
+| Generation temperatures | 0, 0.25, 1.0; four held-out prompts |
 
-## A complete example
+For a smaller matrix using GPT-2 and the paper's 1e-6 learning rate / 150-step warmup, use [experiments/gpt2-mac.json](experiments/gpt2-mac.json):
 
-Let's work through a complete example training pythia 2.8B on the Anthropic-HH dataset.
+```bash
+python -m dpo_lab run --config experiments/gpt2-mac.json \
+  --data artifacts/public-data --output artifacts/my-gpt2-run --device mps
+python -m dpo_lab report artifacts/my-gpt2-run
+```
 
-See sample wandb outputs for this example [here](https://wandb.ai/eric_anthony_mitchell/dpo-demos) (tagged `readme-example`).
+This is a separate one-seed diagnostic, with fewer baselines. It retains EOS in the original objective. The Pythia matrix exposed a very low EOS probability and repetitive outputs; see [the numerical investigation](docs/VALIDATION.md). The original Hydra entry now defaults to GPT-2 and smaller context/evaluation batches; all larger settings remain configurable.
 
-### Step 1: Set up environment
+Change [experiments/mac.json](experiments/mac.json) to scale a run. Short contexts, small datasets and small models constrain generation quality. More training does not automatically reproduce the original study.
 
-First, create a virtualenv and install the dependencies. Python 3.8+ is recommended.
+Resume a run with unchanged source, configuration, packages and device:
 
-    python3 -m venv env
-    source env/bin/activate
-    pip install -r requirements.txt
+```bash
+python -m dpo_lab run --config experiments/mac.json \
+  --data artifacts/public-data --output artifacts/my-public-run --device mps --resume
+```
 
+Completed stages and caches are verified by SHA-256. Interrupted stages restart from their input checkpoint. This is **stage-level restart**, not exact mid-update recovery. Changed experiments need a new output directory.
 
-### Step 2: Run SFT
+## Saved experiments and interpretation
 
-We'll take advantage of FSDP's mixed precision in bfloat16 to speed up training; we usually see about a 50% speedup. By default, SFT will run for a single epoch over a mixture of the selected datasets. Datasets will be downloaded on the fly and cached locally.
+- [Evidence overview](results/README.md), including negative results and scope limits.
+- [Public-data report](results/m1-public/REPORT.md): actual M1 experiments, seed-level results, plots and limitations.
+- [Additional GPT-2 report](results/gpt2-public/REPORT.md).
+- [Public run configuration and environment](results/m1-public/manifest.json).
+- [Selected dataset provenance](results/m1-public/data/manifest.json).
+- [MPS smoke report](results/smoke-mps/REPORT.md) and [CPU smoke report](results/smoke-cpu/REPORT.md).
+- [Numerical CPU/MPS validation and cache timing](docs/VALIDATION.md), including failed strict GPT-2 comparisons.
 
-    python -u train.py model=pythia28 datasets=[hh] loss=sft exp_name=anthropic_dpo_pythia28 gradient_accumulation_steps=2 batch_size=64 eval_batch_size=32 trainer=FSDPTrainer sample_during_eval=false model.fsdp_policy_mp=bfloat16
+The reference-cache microbenchmark measured **1.25× forward/backward throughput** on GPT-2 (0.124 → 0.099 seconds per pair), excluding cache construction and optimizer updates. All 18 unit tests passed. GPT-2 exceeded the strict 2% per-parameter CPU/MPS gradient threshold in two cases (maximum 2.121%; whole-model error 0.056%); those failures are retained in the validation record.
 
-> Note: this command is run on a machine with 4 80GB A100s; on this hardware, SFT takes about 1hr 30min. If you have less compute available, you might need to increase the number of gradient accumulation steps, and SFT will take longer.
+![Held-out preference measurements](results/m1-public/preference_accuracy.png)
 
-**See sample wandb outputs for the SFT step [here](https://wandb.ai/eric_anthony_mitchell/dpo-demos/runs/i4i3ddpp).**
+**Read the metrics correctly.** Preference accuracy measures the implicit reward's ordering of existing held-out pairs. It is not a human/GPT-4 generation win rate. The SFT reference has tied implicit rewards and receives 0.5 by construction. Summarization/dialogue learned rewards and lexical overlap are diagnostics. Small models may generate incoherent responses even when preference loss improves.
 
-### Step 3: Run DPO
+Sequence KL is measured only from untempered policy samples using the sum of exact vocabulary-level conditional KL values at sampled prefixes. Tempered and Best-of-N samples are not mislabeled as this policy KL. See the report for uncertainty and small-sample caveats.
 
-Check either wandb (if enabled, it is by default) or your output log to find the local run directory. To run DPO, you'll need the path to the final weights, which will look something like `/some/cache/dir/YOUR_USERNAME/pythia28_hh_sft_bf16_2023-06-21_16-58-17_973996/LATEST/policy.pt`. The `LATEST` directory contains the final set of weights from the end of training.
+## Data flow
 
-    python -u train.py model=pythia28 datasets=[hh] loss=dpo loss.beta=0.1 exp_name=anthropic_dpo_pythia28 gradient_accumulation_steps=2 batch_size=64 eval_batch_size=32 trainer=FSDPTrainer sample_during_eval=false model.fsdp_policy_mp=bfloat16 model.archive=/path/to/archive/from/sft/LATEST/policy.pt
+```mermaid
+flowchart LR
+    Public[Versioned public datasets] --> Select[Bounded sampling + split checks]
+    Fixture[Explicit synthetic fixtures] --> Select
+    Select --> SFTData[Task SFT examples]
+    SFTData --> SFT[Supervised fine-tuning]
+    SFT --> Ref[Frozen SFT reference]
+    SFT --> Init[Initialize policy from SFT]
+    Select --> Human[Human preference pairs]
+    SFT --> Samples[IMDb: sample 4 responses per prefix]
+    Samples --> Oracle[Sentiment classifier ranking]
+    Oracle --> Pairs[Chosen / rejected pairs]
+    Human --> Pairs
+    Pairs --> Tokens[Tokenize + mask prompt/padding + EOS]
+    Ref --> Cache[Cache reference log probabilities]
+    Tokens --> Cache
+    Tokens --> Loss[DPO loss]
+    Cache --> Loss
+    Init --> Loss
+    Loss --> Update[Microbatches + RMSprop]
+    Update --> Eval[Held-out pairs / generation / KL / OOD]
+    Eval --> Evidence[JSONL + checkpoints + CSV + plots]
+```
 
-On 4 80GB A100s, DPO training took about 2hrs 45min.
+DPO itself does not train a reward model or sample responses during preference updates. Sentiment preference construction happens beforehand. Explicit reward learning and PPO belong to the comparison baselines.
 
-**See sample wandb outputs for the DPO step [here](https://wandb.ai/eric_anthony_mitchell/dpo-demos/runs/og8q3euz).**
+## Code and execution structure
 
-### Customizing training
-The options for training are in `config/config.yaml`, `config/model/blank_model.yaml`, and `config/loss/dpo.yaml`. See the comments in these files for more information on what they do.
+```mermaid
+flowchart TB
+    CLI[dpo_lab CLI] --> Pipeline[pipeline.py: stages and restart]
+    Pipeline --> Data[data.py: public and fixture adapters]
+    Pipeline --> Model[models.py: causal models and tokenizers]
+    Pipeline --> Train[engine.py: SFT / preference learning]
+    Pipeline --> Base[baselines.py: reward model / PPO]
+    Pipeline --> Eval[evaluation.py: generation / KL / judging]
+    Train --> Shared[objectives.py: original DPO / cDPO / IPO]
+    Hydra[train.py: original Hydra entry] --> Trainers[trainers.py: Basic / FSDP / TP]
+    Trainers --> Shared
+    Pipeline --> Files[Run artifacts]
+    Files --> Report[report.py: analysis and figures]
+```
 
-You can use one of the pre-configured models by passing `model=some_model`, where `config/model/some_model.yaml` exists. We have a few examples already given.
+```text
+config/                     Original Hydra configs; M1 model and IPO added
+experiments/                Explicit smoke and public-data experiment profiles
+dpo_lab/                    Local training, baselines, evaluation, reporting
+scripts/                    Demo recording, numerical parity and timing tools
+tests/                      Mathematical, data, cache and runtime regression tests
+results/                    Actual experiment evidence and reports
+docs/                       Paper audit, architecture, upstream README and video
+train.py                    Compatible original training entry
+trainers.py                 Original trainer classes with MPS/CPU support
+preference_datasets.py      Original HH/SHP/SE and local JSONL support
+```
 
-If you want to use another model, just create a new config for that model (following our examples; it must be a `.yaml` file!), or use `model=blank_model` with `model.name_or_path=NAME_OR_PATH`, optionally `model.tokenizer_name_or_path=TOKENIZER_NAME_OR_PATH` if it is different than the model's name/path, and `model.block_name=NAME_OF_TRANSFORMER_BLOCK` (if you are using FSDP). The only other options you might want to change are the dpo loss options, which are `loss.beta` and `loss.reference_free` (see `config/loss/dpo.yaml`).
+## The unchanged DPO objective
 
-## Trainer classes
+For chosen response `y_w`, rejected response `y_l`, and a fixed SFT reference:
 
-We implement three different trainer classes in `trainers.py`:
-- `BasicTrainer`: For multiple GPUs, naively partition the model among them. e.g., for two GPUs, the first half of the model layers will be on GPU 0, the second half will be on GPU 1. This trainer effectively increases your available GPU memory without using multiple GPUs are once for compute (so you get no speedup).
-- `FSDPTrainer`: Use PyTorch's [Fully Sharded Data Parallel](https://pytorch.org/docs/stable/fsdp.html) (FSDP) implementation to shard each transformer block amongst available GPUs. Should give a significant speedup over `BasicTrainer` with batch size per GPU >1. The batch size per gpu is equal to `batch_size / (gradient_accumulation_steps * num_gpus)`. **You may need to run `ulimit -n 64000` in your launch script before calling `train.py` with this trainer; e.g., `ulimit -n 64000; python train.py ...`.**
-- `TensorParallelTrainer`: Use PyTorch tensor parallelism (with [this wrapper](https://github.com/BlackSamorez/tensor_parallel)) to shard each linear layer amongst available GPUs. This trainer is experimental, but should work.
+$$
+\mathcal L_{DPO}=-\mathbb E\log\sigma\left(\beta\left[
+\log\pi_\theta(y_w|x)-\log\pi_{ref}(y_w|x)
+-\log\pi_\theta(y_l|x)+\log\pi_{ref}(y_l|x)\right]\right).
+$$
 
-**Warning:** Sampling may be very slow for `FSDPTrainer` and especially `TensorParallelTrainer` (see [this issue](https://github.com/pytorch/pytorch/issues/100069) and [this issue](https://github.com/BlackSamorez/tensor_parallel/issues/66), respectively for `FSDPTrainer` and `TensorParallelTrainer`). Passing `sample_during_eval=false` is recommended for these trainers.
+DPO sums response token log-probabilities; prompt/padding tokens are excluded. cDPO adds label smoothing. IPO uses **average** response token log-probabilities with its squared objective. The frozen-reference cache is mathematically identical to running the reference forward pass for the same tokens and weights; an equivalence test checks gradients.
 
-### Which trainer do I use?
- For single GPU training, use `BasicTrainer`. For many-GPU setups, `FSDPTrainer` will most likely be the best choice, though these haven't been benchmarked yet.
+## Original Hydra interface
 
-# Adding new datasets
-Adding new/custom datasets is easy, and shouldn't take more than 10 minutes or so. Add your dataset to `preference_datasets.py` (we've implemented Anthropic-HH, Stanford Human Preferences, and StackExchange as references). Follow our reference datasets (in the functions `get_se()`, `get_shp()`, `get_hh()`); you essentially need to return a dict mapping each prompt to another dict containing three values:
+The original datasets `hh`, `shp`, `se` and CUDA trainer classes remain available. A local dataset directory may contain `train.jsonl` and `test.jsonl` rows with `prompt`, `chosen`, and `rejected` strings. This allows a bounded M1 run without loading all HH data:
 
-- `responses: List[str]`: the list of responses on which preferences are given
-- `pairs: List[Tuple[int]]`: the preference pairs, where the first value in each tuple is the preferred response and the second value is the dispreferred response
-- `sft_target: str`: the response to use for this prompt during SFT (this response may or may not be one of the values in `responses`)
+```bash
+python train.py model=gpt2 loss=sft device=mps \
+  datasets='[artifacts/public-data/dialogue]' exp_name=local_sft \
+  batch_size=4 gradient_accumulation_steps=4 eval_batch_size=2 \
+  max_length=128 max_prompt_length=88 n_eval_examples=16 \
+  sample_during_eval=false local_run_dir=artifacts/hydra-sft
 
-Once you've added your dataset, for example `xyz`, you can train on it by passing it to `datasets=[xyz]` to an SFT or DPO train command.
+python train.py model=gpt2 loss=dpo loss.beta=0.1 device=mps \
+  model.archive=artifacts/hydra-sft/LATEST/policy.pt \
+  datasets='[artifacts/public-data/dialogue]' exp_name=local_dpo \
+  batch_size=4 gradient_accumulation_steps=4 eval_batch_size=2 \
+  max_length=128 max_prompt_length=88 n_eval_examples=16 \
+  sample_during_eval=false local_run_dir=artifacts/hydra-dpo
+```
 
-**Make sure you've updated `preference_datasets:get_dataset()` to return your new dataset when its name is passed in!**
+Use `loss=ipo` for IPO or `loss.label_smoothing=0.1` for cDPO. `eval_every` is measured in examples. W&B is off by default. FSDP and TensorParallel require CUDA; install the optional `tensor-parallel` dependency only for that legacy trainer. These distributed paths are retained but not hardware-validated on this Mac.
 
-# Tips for faster training on multiple GPUs
-FSDP is recommended for faster training when multiple GPUs are available. In general, you should try to use a batch size of at least 2 on each GPU (i.e., `batch_size // (grad_accumulation_steps * N_GPUS)` is at least 2) to see a speedup from FSDP compared to the `BasicTrainer`. One way to do this is to use mixed precision. This repo implements mixed precision through [FSDP](https://pytorch.org/docs/stable/fsdp.html#torch.distributed.fsdp.MixedPrecision). Enable mixed precision (only supported for `FSDPTrainer`, currently) by passing `model.fsdp_policy_mp=bfloat16` or `model.fsdp_policy_mp=float16` (only `bfloat16` has been tested). Another way to reduce memory usage is activation checkpointing (or *gradient checkpointing*), which can be enabled with `activation_checkpointing=true` (also implemented only for `FSDPTrainer`). Activation checkpointing doesn't always increase throughput, but if you're stuck at batch size per GPU of 1, it's worth a try.
+## Generate from a saved model
 
-See [this article](https://pytorch.org/blog/efficient-large-scale-training-with-pytorch/) for more information about optimizing FSDP.
+The local experiment runner saves standard Hugging Face model directories:
 
-# Citing DPO
-If DPO or this repository is useful in your own research, you can use the following BibTeX entry:
+```bash
+python -m dpo_lab generate \
+  --model artifacts/my-public-run/seed_0/dialogue/dpo_beta_0.1/model \
+  --prompt $'\n\nHuman: How can I learn to cook?\n\nAssistant:' \
+  --task dialogue --device mps --max-new-tokens 48
+```
 
-    @inproceedings{
-        rafailov2023direct,
-        title={Direct Preference Optimization: Your Language Model is Secretly a Reward Model},
-        author={Rafael Rafailov and Archit Sharma and Eric Mitchell and Christopher D Manning and Stefano Ermon and Chelsea Finn},
-        booktitle={Thirty-seventh Conference on Neural Information Processing Systems},
-        year={2023},
-        url={https://arxiv.org/abs/2305.18290}
-    }
+Run the public experiment first if weights are absent after cloning. Git intentionally excludes the large weights. Hydra's `policy.pt` format remains available for its original training path.
+
+## External judgments, tests and demo regeneration
+
+Blinded A/B forms are exported next to generation samples. Fill real judgments and evaluator provenance, then import them with `python -m dpo_lab judge --help`. `python -m dpo_lab agreement --help` compares aligned independent judgment files. Neither command fabricates labels or calls a paid service. [Evaluation procedure](docs/PAPER_REPRODUCTION.md).
+
+```bash
+python -m pytest -q
+python scripts/check_device_parity.py \
+  --data results/m1-public/data/dialogue/train.jsonl \
+  --output artifacts/device-parity.json
+
+# Requires ffmpeg on PATH; records actual execution, then renders MP4/GIF.
+# The demo creates a new timestamped directory under artifacts/.
+# Omit --public-results for the offline-only recording; public weights must exist.
+python scripts/record_demo.py --output docs/media/demo --speed 2 -- \
+  python -u scripts/demo.py --public-results results/gpt2-public
+```
+
+If memory is constrained, keep `microbatch_size=1`, shorten contexts, enable `gradient_checkpointing`, or use CPU. Reducing logical batch size changes optimization and should be recorded as a different experiment. This project pins PyTorch 2.15 after an older 2.6 MPS run exhibited invalid gradients; use the tested environment and inspect numerical parity when changing it.
+
+## Citation and license
+
+The original code retains its [Apache-2.0 license](LICENSE). The repository's initial [MIT notice](LICENSE-MIT) is also preserved; it does not replace the upstream license. Dataset/model licenses remain with their respective authors.
+
+```bibtex
+@inproceedings{rafailov2023direct,
+  title={Direct Preference Optimization: Your Language Model is Secretly a Reward Model},
+  author={Rafailov, Rafael and Sharma, Archit and Mitchell, Eric and
+          Manning, Christopher D. and Ermon, Stefano and Finn, Chelsea},
+  booktitle={Advances in Neural Information Processing Systems},
+  year={2023},
+  url={https://arxiv.org/abs/2305.18290}
+}
+```

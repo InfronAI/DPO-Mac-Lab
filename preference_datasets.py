@@ -1,4 +1,7 @@
 import datasets
+import json
+import os
+from pathlib import Path
 import torch
 from torch.utils.data import DataLoader, Dataset
 from utils import get_local_dir, TemporarilySeededRandom
@@ -63,7 +66,7 @@ def get_se(split, silent=False, cache_dir: str = None) -> Dict[str, Dict[str, Un
             a['text'] = strip_html_tags(a['text'])
         return x
 
-    dataset = dataset.map(strip_html, num_proc=64)
+    dataset = dataset.map(strip_html, num_proc=min(4, os.cpu_count() or 1))
 
     data = defaultdict(dict)
     for row in tqdm.tqdm(dataset, desc='Processing SE', disable=silent):
@@ -162,7 +165,16 @@ def get_hh(split: str, silent: bool = False, cache_dir: str = None) -> Dict[str,
 
 def get_dataset(name: str, split: str, silent: bool = False, cache_dir: str = None):
     """Load the given dataset by name. Supported by default are 'shp', 'hh', and 'se'."""
-    if name == 'shp':
+    if Path(name).is_dir():
+        rows = [json.loads(line) for line in (Path(name) / f'{split}.jsonl').read_text().splitlines() if line.strip()]
+        data = defaultdict(lambda: {'responses': [], 'pairs': [], 'sft_target': ''})
+        for row in rows:
+            entry = data[row['prompt']]
+            offset = len(entry['responses'])
+            entry['responses'].extend([row['chosen'], row['rejected']])
+            entry['pairs'].append((offset, offset + 1))
+            entry['sft_target'] = row.get('sft_target', row['chosen'])
+    elif name == 'shp':
         data = get_shp(split, silent=silent, cache_dir=cache_dir)
     elif name == 'hh':
         data = get_hh(split, silent=silent, cache_dir=cache_dir)
@@ -171,6 +183,8 @@ def get_dataset(name: str, split: str, silent: bool = False, cache_dir: str = No
     else:
         raise ValueError(f"Unknown dataset '{name}'")
 
+    if not data:
+        raise ValueError(f'Empty dataset: {name}/{split}')
     assert set(list(data.values())[0].keys()) == {'responses', 'pairs', 'sft_target'}, \
         f"Unexpected keys in dataset: {list(list(data.values())[0].keys())}"
 
@@ -222,35 +236,28 @@ def tokenize_batch_element(prompt: str, chosen: str, rejected: str, truncation_m
          the sum of the length of the prompt and the chosen/rejected response, with -100 for the
          prompt tokens.
     """
-    chosen_tokens = tokenizer(chosen, add_special_tokens=False)
-    rejected_tokens = tokenizer(rejected, add_special_tokens=False)
-    prompt_tokens = tokenizer(prompt, add_special_tokens=False)
-
-    assert tokenizer.eos_token_id not in prompt_tokens['input_ids'], f"Prompt contains EOS token: {prompt}"
-    assert tokenizer.eos_token_id not in chosen_tokens['input_ids'], f"Chosen response contains EOS token: {chosen}"
-    assert tokenizer.eos_token_id not in rejected_tokens['input_ids'], f"Rejected response contains EOS token: {rejected}"
-
-    chosen_tokens['input_ids'].append(tokenizer.eos_token_id)
-    chosen_tokens['attention_mask'].append(1)
-
-    rejected_tokens['input_ids'].append(tokenizer.eos_token_id)
-    rejected_tokens['attention_mask'].append(1)
-
-    longer_response_length = max(len(chosen_tokens['input_ids']), len(rejected_tokens['input_ids']))
-
-    # if combined sequence is too long, truncate the prompt
-    if len(prompt_tokens['input_ids']) + longer_response_length > max_length:
-        if truncation_mode == 'keep_start':
-            prompt_tokens = {k: v[:max_prompt_length] for k, v in prompt_tokens.items()}
-        elif truncation_mode == 'keep_end':
-            prompt_tokens = {k: v[-max_prompt_length:] for k, v in prompt_tokens.items()}
-        else:
-            raise ValueError(f'Unknown truncation mode: {truncation_mode}')
-
-    # if that's still too long, truncate the response
-    if len(prompt_tokens['input_ids']) + longer_response_length > max_length:
-        chosen_tokens = {k: v[:max_length - max_prompt_length] for k, v in chosen_tokens.items()}
-        rejected_tokens = {k: v[:max_length - max_prompt_length] for k, v in rejected_tokens.items()}
+    if not 0 < max_prompt_length < max_length:
+        raise ValueError('Require 0 < max_prompt_length < max_length')
+    if tokenizer.eos_token_id is None:
+        raise ValueError('Tokenizer must define eos_token_id')
+    if truncation_mode not in {'keep_start', 'keep_end'}:
+        raise ValueError(f'Unknown truncation mode: {truncation_mode}')
+    def encode(text):
+        ids = tokenizer.encode(text, add_special_tokens=False)
+        return {'input_ids': ids, 'attention_mask': [1] * len(ids)}
+    prompt_tokens = encode(prompt)
+    if not prompt_tokens['input_ids']:
+        prompt_tokens = {'input_ids': [tokenizer.bos_token_id or tokenizer.eos_token_id], 'attention_mask': [1]}
+    # Always bound prompts, including when generation is used without a long response.
+    prompt_tokens = {k: (v[:max_prompt_length] if truncation_mode == 'keep_start' else v[-max_prompt_length:]) for k, v in prompt_tokens.items()}
+    room = max_length - len(prompt_tokens['input_ids'])
+    def response(text):
+        ids = encode(text)['input_ids']
+        if ids and ids[-1] == tokenizer.eos_token_id:
+            ids.pop()
+        ids = ids[:room - 1] + [tokenizer.eos_token_id]
+        return {'input_ids': ids, 'attention_mask': [1] * len(ids)}
+    chosen_tokens, rejected_tokens = response(chosen), response(rejected)
 
     # Create labels
     chosen_sequence_tokens = {k: prompt_tokens[k] + chosen_tokens[k] for k in chosen_tokens}
@@ -307,68 +314,44 @@ def get_batch_iterator(names: List[str],
         silent: Whether to silence the progress bar(s).
         cache_dir: Directory to cache the datasets in.
     """
-    assert n_epochs is not None or n_examples is not None, "Must specify either n_epochs or n_examples"
-    if silent:
-        datasets.logging.disable_progress_bar()
-        datasets.logging.set_verbosity_error()
-
-    with TemporarilySeededRandom(seed):
-        permutation_seeds = iter(np.random.randint(0, 2**32, size=1000000))
-        flat_data = []
-        for name in names:
-            truncation_mode = 'keep_end' if name == 'hh' else 'keep_start'
-            for prompt, data in get_dataset(name, split, silent=silent, cache_dir=cache_dir).items():
-                flat_data.append((prompt, data['responses'], data['pairs'], data['sft_target'], truncation_mode))
-
-    collate_fn = get_collate_fn(tokenizer)
-
-    epoch_idx = 0
-    example_idx = 0
-    done = False
-    while True:
-        if n_epochs is not None and epoch_idx >= n_epochs:
-            if not silent:
-                print(f'Finished generating {n_epochs} epochs on {split} split')
-            break
-        if shuffle:
-            with TemporarilySeededRandom(next(permutation_seeds)):
-                random.shuffle(flat_data)
-
-        batch = []
-        for prompt, responses, pairs, sft_target, truncation_mode in flat_data:
-            if done:
-                break
+    if n_epochs is None and n_examples is None:
+        raise ValueError('Specify n_epochs or n_examples')
+    if batch_size < 1 or (n_epochs is not None and n_epochs < 1) or (n_examples is not None and n_examples < 1):
+        raise ValueError('Batch/epoch/example limits must be positive')
+    rng = random.Random(seed)
+    flat_data = []
+    for name in names:
+        mode = 'keep_end' if name == 'hh' else 'keep_start'
+        for prompt, data in get_dataset(name, split, silent=silent, cache_dir=cache_dir).items():
             if sft_mode:
-                batch_element = tokenize_batch_element(prompt, sft_target, sft_target, truncation_mode, tokenizer, max_length, max_prompt_length)
-                batch_element = {k: v for k, v in batch_element.items() if 'rejected' not in k}
-                batch.append(batch_element)
-                example_idx += 1
-                if len(batch) == batch_size:
-                    yield collate_fn(batch)
-                    if n_examples is not None and example_idx >= n_examples:
-                        if not silent:
-                            print(f'Finished generating {n_examples} examples on {split} split')
-                        done = True
-
-                    batch = []
+                flat_data.append((prompt, data['sft_target'], data['sft_target'], mode))
             else:
-                for p in pairs:
-                    if done:
-                        break
-                    batch_element = tokenize_batch_element(prompt, responses[p[0]], responses[p[1]], truncation_mode, tokenizer, max_length, max_prompt_length)
-                    batch.append(batch_element)
-                    example_idx += 1
-                    if len(batch) == batch_size:
-                        yield collate_fn(batch)
-                        if n_examples is not None and example_idx >= n_examples:
-                            if not silent:
-                                print(f'FINISHED {n_examples} EXAMPLES on {split} split')
-                            done = True
-                        batch = []
-        if done:
-            break
-
-        epoch_idx += 1
+                flat_data.extend((prompt, data['responses'][i], data['responses'][j], mode) for i, j in data['pairs'])
+    if not flat_data:
+        raise ValueError('Dataset contains no training examples')
+    collate_fn = get_collate_fn(tokenizer)
+    epoch, emitted = 0, 0
+    while n_epochs is None or epoch < n_epochs:
+        order = list(range(len(flat_data)))
+        if shuffle:
+            rng.shuffle(order)
+        batch = []
+        for index in order:
+            prompt, chosen, rejected, mode = flat_data[index]
+            item = tokenize_batch_element(prompt, chosen, rejected, mode, tokenizer, max_length, max_prompt_length)
+            if sft_mode:
+                item = {k: v for k, v in item.items() if not k.startswith('rejected')}
+            batch.append(item)
+            emitted += 1
+            done = n_examples is not None and emitted >= n_examples
+            if len(batch) == batch_size or done:
+                yield collate_fn(batch)
+                batch = []
+            if done:
+                return
+        if batch:
+            yield collate_fn(batch)
+        epoch += 1
 
 
 def strings_match_up_to_spaces(str_a: str, str_b: str) -> bool:

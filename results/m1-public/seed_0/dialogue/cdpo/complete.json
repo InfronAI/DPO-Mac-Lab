@@ -1,0 +1,12 @@
+{
+  "files": {
+    "metrics.jsonl": "22f90ef18ea1bd80d3221eb49b95f7e68866c06bec1d57611e047a003b9cfa09",
+    "model/config.json": "0edd05eb9ee6f661827553ddbf02338690177fac5691c08f5aefabfd4743ef64",
+    "model/generation_config.json": "a3efd46d8718f4d739fd443227880fe7297554ffd6271591a2ca32c6319cdf75",
+    "model/model.safetensors": "4f6ee105ab37afe01ec98c34942439179e4f8ae94fbe3adf8b7e03f0780a1389",
+    "model/special_tokens_map.json": "57491904f8680d4b52ed440f1f7ba48cad1c31ecf3eb453b03484e6ff4723ae8",
+    "model/tokenizer.json": "d4c0d99d84af59e9126913fafe5210822963e9a3065ee43e6833b358b0c2f825",
+    "model/tokenizer_config.json": "435e0103b15eee9a299ded22f93129ebb7409bc5b6dd93f069bd86bdbc7c44a1",
+    "training.json": "312f55da447f5805548ce0c2241bab00c1115faca3fc77519feea9f8c7330b95"
+  }
+}

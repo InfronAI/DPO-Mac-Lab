@@ -1,0 +1,314 @@
+[
+  {
+    "task": "sentiment",
+    "method": "base",
+    "seeds": 1,
+    "accuracy_mean": 0.0,
+    "accuracy_sd": null,
+    "margin_mean": -0.2511380538344383,
+    "nll_mean": 4.1418618361155195,
+    "pairs": [
+      4
+    ]
+  },
+  {
+    "task": "sentiment",
+    "method": "sft",
+    "seeds": 1,
+    "accuracy_mean": 0.5,
+    "accuracy_sd": null,
+    "margin_mean": 0.0,
+    "nll_mean": 3.2798612912495932,
+    "pairs": [
+      4
+    ]
+  },
+  {
+    "task": "sentiment",
+    "method": "dpo_beta_0.1",
+    "seeds": 1,
+    "accuracy_mean": 1.0,
+    "accuracy_sd": null,
+    "margin_mean": 0.20192251354455948,
+    "nll_mean": 3.2681883176167807,
+    "pairs": [
+      4
+    ]
+  },
+  {
+    "task": "sentiment",
+    "method": "preferred_ft",
+    "seeds": 1,
+    "accuracy_mean": 1.0,
+    "accuracy_sd": null,
+    "margin_mean": 0.04829940851777792,
+    "nll_mean": 3.123440742492676,
+    "pairs": [
+      4
+    ]
+  },
+  {
+    "task": "sentiment",
+    "method": "cdpo",
+    "seeds": 1,
+    "accuracy_mean": 1.0,
+    "accuracy_sd": null,
+    "margin_mean": 0.20192237198352814,
+    "nll_mean": 3.2681882381439213,
+    "pairs": [
+      4
+    ]
+  },
+  {
+    "task": "sentiment",
+    "method": "ipo",
+    "seeds": 1,
+    "accuracy_mean": 1.0,
+    "accuracy_sd": null,
+    "margin_mean": 0.20192256197333336,
+    "nll_mean": 3.2681883176167803,
+    "pairs": [
+      4
+    ]
+  },
+  {
+    "task": "sentiment",
+    "method": "reference_free",
+    "seeds": 1,
+    "accuracy_mean": 1.0,
+    "accuracy_sd": null,
+    "margin_mean": 0.2019214630126953,
+    "nll_mean": 3.2681883176167807,
+    "pairs": [
+      4
+    ]
+  },
+  {
+    "task": "sentiment",
+    "method": "ppo",
+    "seeds": 1,
+    "accuracy_mean": 0.0,
+    "accuracy_sd": null,
+    "margin_mean": -0.0027441028505563736,
+    "nll_mean": 3.3814082940419516,
+    "pairs": [
+      4
+    ]
+  },
+  {
+    "task": "sentiment",
+    "method": "unlikelihood",
+    "seeds": 1,
+    "accuracy_mean": 1.0,
+    "accuracy_sd": null,
+    "margin_mean": 0.07392525672912598,
+    "nll_mean": 3.1496935685475664,
+    "pairs": [
+      4
+    ]
+  },
+  {
+    "task": "sentiment",
+    "method": "ppo_gt",
+    "seeds": 1,
+    "accuracy_mean": 0.5,
+    "accuracy_sd": null,
+    "margin_mean": 0.0,
+    "nll_mean": 3.2798612912495932,
+    "pairs": [
+      4
+    ]
+  },
+  {
+    "task": "summarization",
+    "method": "base",
+    "seeds": 1,
+    "accuracy_mean": 0.0,
+    "accuracy_sd": null,
+    "margin_mean": -3.1099600791931152,
+    "nll_mean": 4.177464866638184,
+    "pairs": [
+      4
+    ]
+  },
+  {
+    "task": "summarization",
+    "method": "sft",
+    "seeds": 1,
+    "accuracy_mean": 0.5,
+    "accuracy_sd": null,
+    "margin_mean": 0.0,
+    "nll_mean": 3.3245450973510744,
+    "pairs": [
+      4
+    ]
+  },
+  {
+    "task": "summarization",
+    "method": "dpo_beta_0.5",
+    "seeds": 1,
+    "accuracy_mean": 1.0,
+    "accuracy_sd": null,
+    "margin_mean": 1.2976350784301758,
+    "nll_mean": 3.2487052917480472,
+    "pairs": [
+      4
+    ]
+  },
+  {
+    "task": "summarization",
+    "method": "preferred_ft",
+    "seeds": 1,
+    "accuracy_mean": 1.0,
+    "accuracy_sd": null,
+    "margin_mean": 0.6990270614624023,
+    "nll_mean": 3.134462642669678,
+    "pairs": [
+      4
+    ]
+  },
+  {
+    "task": "summarization",
+    "method": "cdpo",
+    "seeds": 1,
+    "accuracy_mean": 1.0,
+    "accuracy_sd": null,
+    "margin_mean": 1.2976346015930176,
+    "nll_mean": 3.2487052917480472,
+    "pairs": [
+      4
+    ]
+  },
+  {
+    "task": "summarization",
+    "method": "ipo",
+    "seeds": 1,
+    "accuracy_mean": 1.0,
+    "accuracy_sd": null,
+    "margin_mean": 1.2932367324829102,
+    "nll_mean": 3.2590161323547364,
+    "pairs": [
+      4
+    ]
+  },
+  {
+    "task": "summarization",
+    "method": "reference_free",
+    "seeds": 1,
+    "accuracy_mean": 1.0,
+    "accuracy_sd": null,
+    "margin_mean": 1.297635555267334,
+    "nll_mean": 3.248705291748047,
+    "pairs": [
+      4
+    ]
+  },
+  {
+    "task": "summarization",
+    "method": "ppo",
+    "seeds": 1,
+    "accuracy_mean": 1.0,
+    "accuracy_sd": null,
+    "margin_mean": 0.06507205963134766,
+    "nll_mean": 3.3494773864746095,
+    "pairs": [
+      4
+    ]
+  },
+  {
+    "task": "dialogue",
+    "method": "base",
+    "seeds": 1,
+    "accuracy_mean": 0.0,
+    "accuracy_sd": null,
+    "margin_mean": -0.7126124650239944,
+    "nll_mean": 4.202901204427084,
+    "pairs": [
+      4
+    ]
+  },
+  {
+    "task": "dialogue",
+    "method": "sft",
+    "seeds": 1,
+    "accuracy_mean": 0.5,
+    "accuracy_sd": null,
+    "margin_mean": 0.0,
+    "nll_mean": 3.3890103234185114,
+    "pairs": [
+      4
+    ]
+  },
+  {
+    "task": "dialogue",
+    "method": "dpo_beta_0.1",
+    "seeds": 1,
+    "accuracy_mean": 1.0,
+    "accuracy_sd": null,
+    "margin_mean": 0.24601006880402565,
+    "nll_mean": 3.299381521013048,
+    "pairs": [
+      4
+    ]
+  },
+  {
+    "task": "dialogue",
+    "method": "preferred_ft",
+    "seeds": 1,
+    "accuracy_mean": 1.0,
+    "accuracy_sd": null,
+    "margin_mean": 0.12703562155365944,
+    "nll_mean": 3.1735382080078125,
+    "pairs": [
+      4
+    ]
+  },
+  {
+    "task": "dialogue",
+    "method": "cdpo",
+    "seeds": 1,
+    "accuracy_mean": 1.0,
+    "accuracy_sd": null,
+    "margin_mean": 0.24601006880402565,
+    "nll_mean": 3.299381521013048,
+    "pairs": [
+      4
+    ]
+  },
+  {
+    "task": "dialogue",
+    "method": "ipo",
+    "seeds": 1,
+    "accuracy_mean": 1.0,
+    "accuracy_sd": null,
+    "margin_mean": 0.24572892859578133,
+    "nll_mean": 3.3073133362664118,
+    "pairs": [
+      4
+    ]
+  },
+  {
+    "task": "dialogue",
+    "method": "reference_free",
+    "seeds": 1,
+    "accuracy_mean": 1.0,
+    "accuracy_sd": null,
+    "margin_mean": 0.24601054564118385,
+    "nll_mean": 3.299381626976861,
+    "pairs": [
+      4
+    ]
+  },
+  {
+    "task": "dialogue",
+    "method": "ppo",
+    "seeds": 1,
+    "accuracy_mean": 0.0,
+    "accuracy_sd": null,
+    "margin_mean": -0.031144524458795786,
+    "nll_mean": 3.407530148824056,
+    "pairs": [
+      4
+    ]
+  }
+]

@@ -1,0 +1,16 @@
+{"step": 1, "epoch": 0, "examples": 4, "loss": 1398.8244323730469, "grad_norm": 3408.328125, "lr": 5e-06, "elapsed_seconds": 0.34627266600728035}
+{"step": 2, "epoch": 0, "examples": 8, "loss": 1476.1697387695312, "grad_norm": 6262.89697265625, "lr": 1e-05, "elapsed_seconds": 0.6562650827690959}
+{"step": 3, "epoch": 0, "examples": 12, "loss": 1475.6350402832031, "grad_norm": 6970.00732421875, "lr": 1.5000000000000002e-05, "elapsed_seconds": 0.9263804578222334}
+{"step": 4, "epoch": 0, "examples": 16, "loss": 1581.4049377441406, "grad_norm": 9186.103515625, "lr": 2e-05, "elapsed_seconds": 1.2013197909109294}
+{"step": 5, "epoch": 0, "examples": 20, "loss": 1427.3445129394531, "grad_norm": 6826.56591796875, "lr": 2e-05, "elapsed_seconds": 1.5105274580419064}
+{"step": 6, "epoch": 0, "examples": 24, "loss": 1341.2369079589844, "grad_norm": 5521.93408203125, "lr": 2e-05, "elapsed_seconds": 1.835970540996641}
+{"step": 7, "epoch": 0, "examples": 28, "loss": 1636.3297729492188, "grad_norm": 11621.9619140625, "lr": 2e-05, "elapsed_seconds": 2.0554896658286452}
+{"step": 8, "epoch": 0, "examples": 32, "loss": 1471.5998229980469, "grad_norm": 11283.8046875, "lr": 2e-05, "elapsed_seconds": 2.3564572501927614}
+{"step": 9, "epoch": 0, "examples": 36, "loss": 1015.5204620361328, "grad_norm": 46393.18359375, "lr": 2e-05, "elapsed_seconds": 2.5784127907827497}
+{"step": 10, "epoch": 0, "examples": 40, "loss": 1445.9099731445312, "grad_norm": 112191.0, "lr": 2e-05, "elapsed_seconds": 2.868750791065395}
+{"step": 11, "epoch": 0, "examples": 44, "loss": 1151.9524383544922, "grad_norm": 32103.529296875, "lr": 2e-05, "elapsed_seconds": 3.1902162497863173}
+{"step": 12, "epoch": 0, "examples": 48, "loss": 1638.3123931884766, "grad_norm": 49869.8125, "lr": 2e-05, "elapsed_seconds": 3.442568250000477}
+{"step": 13, "epoch": 0, "examples": 52, "loss": 745.2683353424072, "grad_norm": 4754.57470703125, "lr": 2e-05, "elapsed_seconds": 3.750743083190173}
+{"step": 14, "epoch": 0, "examples": 56, "loss": 1512.1394653320312, "grad_norm": 9104.564453125, "lr": 2e-05, "elapsed_seconds": 4.004457416012883}
+{"step": 15, "epoch": 0, "examples": 60, "loss": 346.23791313171387, "grad_norm": 38761.75, "lr": 2e-05, "elapsed_seconds": 4.332531500142068}
+{"step": 16, "epoch": 0, "examples": 64, "loss": 777.2460784912109, "grad_norm": 25915.244140625, "lr": 2e-05, "elapsed_seconds": 4.580268166027963}

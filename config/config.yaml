@@ -2,13 +2,16 @@
 seed: 0
 
 # name for this experiment in the local run directory and on wandb
-exp_name: ???
+exp_name: local_dpo
+
+# auto selects CUDA, then Apple Metal (MPS), then CPU.
+device: auto
 
 # the batch size for training; for FSDP, the batch size per GPU is batch_size / (grad_accumulation_steps * num_gpus)
 batch_size: 4
 
 # the batch size during evaluation and sampling, if enabled
-eval_batch_size: 16
+eval_batch_size: 4
 
 # debug mode (disables wandb, model checkpointing, etc.)
 debug: false
@@ -22,7 +25,7 @@ datasets:
 
 # wandb configuration
 wandb:
-  enabled: true
+  enabled: false
   entity: null
   project: "direct-preference-optimization"
 
@@ -59,10 +62,10 @@ gradient_accumulation_steps: 1
 max_grad_norm: 10.0
 
 # the maximum allowed length for an input (prompt + response)
-max_length: 512
+max_length: 256
 
 # the maximum allowed length for a prompt
-max_prompt_length: 256
+max_prompt_length: 128
 
 # the number of epochs to train for; if null, must specify n_examples
 n_epochs: 1
@@ -93,5 +96,5 @@ minimum_log_interval_secs: 1.0
 
 defaults:
 - _self_
-- model: blank_model_fp32 # basic model configuration
+- model: gpt2 # full-parameter model suitable for Apple Silicon
 - loss: sft # which loss function, either sft or dpo (specify loss.beta if using dpo)

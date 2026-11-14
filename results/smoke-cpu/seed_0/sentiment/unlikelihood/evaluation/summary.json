@@ -1,0 +1,112 @@
+{
+  "task": "sentiment",
+  "seed": 0,
+  "method": "unlikelihood",
+  "beta": 0.1,
+  "pairs": {
+    "loss": {
+      "mean": 0.6568675339221954,
+      "ci95": [
+        0.6566432863473892,
+        0.6570892632007599
+      ],
+      "n": 4
+    },
+    "reward_margin": {
+      "mean": 0.07392525672912598,
+      "ci95": [
+        0.0734647735953331,
+        0.07439103350043297
+      ],
+      "n": 4
+    },
+    "preference_accuracy": {
+      "mean": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "n": 4
+    },
+    "chosen_nll_per_token": {
+      "mean": 3.1496935685475664,
+      "ci95": [
+        3.1481725374857583,
+        3.1506822903951006
+      ],
+      "n": 4
+    }
+  },
+  "generation": {
+    "0.0": {
+      "score": {
+        "mean": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "n": 2
+      },
+      "sequence_kl_mc": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "token_overlap_f1": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "generated_tokens": {
+        "mean": 6.0,
+        "ci95": [
+          6.0,
+          6.0
+        ],
+        "n": 2
+      }
+    },
+    "1.0": {
+      "score": {
+        "mean": 0.5,
+        "ci95": [
+          0.0,
+          1.0
+        ],
+        "n": 2
+      },
+      "sequence_kl_mc": {
+        "mean": 0.005590521963313222,
+        "ci95": [
+          0.005579791963100433,
+          0.0056012519635260105
+        ],
+        "n": 2
+      },
+      "token_overlap_f1": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "generated_tokens": {
+        "mean": 8.0,
+        "ci95": [
+          8.0,
+          8.0
+        ],
+        "n": 2
+      }
+    }
+  },
+  "ood": null,
+  "score_kind": "sentiment oracle probability"
+}

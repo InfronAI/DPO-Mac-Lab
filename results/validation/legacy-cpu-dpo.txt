@@ -1,0 +1,82 @@
+seed: 0
+exp_name: legacy_dpo
+device: cpu
+batch_size: 3
+eval_batch_size: 3
+debug: false
+fsdp_port: null
+datasets:
+- results/smoke-cpu/data/dialogue
+wandb:
+  enabled: false
+  entity: null
+  project: direct-preference-optimization
+local_dirs:
+- /scr-ssd
+- /scr
+- .cache
+sample_during_eval: false
+n_eval_model_samples: 16
+do_first_eval: true
+local_run_dir: artifacts/legacy-current-cpu/dpo
+lr: 5.0e-07
+gradient_accumulation_steps: 2
+max_grad_norm: 10.0
+max_length: 64
+max_prompt_length: 40
+n_epochs: 1
+n_examples: 5
+n_eval_examples: 4
+trainer: BasicTrainer
+optimizer: RMSprop
+warmup_steps: 150
+activation_checkpointing: false
+eval_every: 3
+minimum_log_interval_secs: 1.0
+model:
+  name_or_path: results/smoke-cpu/fixture_model
+  tokenizer_name_or_path: null
+  archive: artifacts/legacy-current-cpu/sft/LATEST/policy.pt
+  block_name: null
+  policy_dtype: float32
+  fsdp_policy_mp: null
+  reference_dtype: float32
+loss:
+  name: dpo
+  beta: 0.1
+  label_smoothing: 0
+  reference_free: false
+
+================================================================================
+Writing to AppledeMacBook-Pro.local:artifacts/legacy-current-cpu/dpo
+================================================================================
+building policy
+building reference model
+loading pre-trained weights at step 5 from artifacts/legacy-current-cpu/sft/LATEST/policy.pt with metrics {}
+loaded pre-trained weights
+starting single-process worker
+Creating trainer on process 0 with world size 1
+Loading tokenizer results/smoke-cpu/fixture_model
+Loaded train data iterator
+Loaded 2 eval batches of size 3
+Using RMSprop optimizer
+Running evaluation after 0 train examples
+Computing eval metrics:   0%|          | 0/2 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Computing eval metrics: 100%|██████████| 2/2 [00:00<00:00, 98.40it/s]
+eval after 0: {'rewards_eval/chosen': '0', 'rewards_eval/rejected': '0', 'rewards_eval/accuracies': '0', 'rewards_eval/margins': '0', 'logps_eval/rejected': '-33.163', 'logps_eval/chosen': '-37.826', 'loss/eval': '0.69315'}
+train stats after 3 examples: {'rewards_train/chosen': '0', 'rewards_train/rejected': '0', 'rewards_train/accuracies': '0', 'rewards_train/margins': '0', 'logps_train/rejected': '-33.159', 'logps_train/chosen': '-37.816', 'loss/train': '0.69315', 'examples_per_second': '84.433', 'grad_norm': '2.758', 'counters/examples': 3, 'counters/updates': 1}
+Running evaluation after 3 train examples
+Computing eval metrics:   0%|          | 0/2 [00:00<?, ?it/s]Computing eval metrics: 100%|██████████| 2/2 [00:00<00:00, 491.17it/s]
+eval after 3: {'rewards_eval/chosen': '1.0395e-05', 'rewards_eval/rejected': '-8.7738e-06', 'rewards_eval/accuracies': '1', 'rewards_eval/margins': '1.9169e-05', 'logps_eval/rejected': '-33.163', 'logps_eval/chosen': '-37.826', 'loss/eval': '0.69314'}
+creating checkpoint to write to artifacts/legacy-current-cpu/dpo/step-3...
+writing checkpoint to artifacts/legacy-current-cpu/dpo/step-3/policy.pt...
+writing checkpoint to artifacts/legacy-current-cpu/dpo/step-3/optimizer.pt...
+writing checkpoint to artifacts/legacy-current-cpu/dpo/step-3/scheduler.pt...
+skipping logging after 5 examples to avoid logging too frequently
+final eval: {'rewards_eval/chosen': '2.5272e-05', 'rewards_eval/rejected': '-2.1362e-05', 'rewards_eval/accuracies': '1', 'rewards_eval/margins': '4.6635e-05', 'logps_eval/rejected': '-33.163', 'logps_eval/chosen': '-37.826', 'loss/eval': '0.69312'}
+writing checkpoint to artifacts/legacy-current-cpu/dpo/LATEST/policy.pt...
+writing checkpoint to artifacts/legacy-current-cpu/dpo/LATEST/optimizer.pt...
+writing checkpoint to artifacts/legacy-current-cpu/dpo/LATEST/scheduler.pt...

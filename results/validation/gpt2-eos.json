@@ -1,0 +1,11 @@
+{
+  "model": "openai-community/gpt2",
+  "revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+  "text": "The movie was good and I really enjoyed it. I thought it was interesting.",
+  "eos_token_id": 50256,
+  "eos_log_probability": -5.351320743560791,
+  "mean_non_eos_log_probability": -2.6846494674682617,
+  "future_token_max_logit_difference": 0.0,
+  "scope": "Single fixed diagnostic sentence; not a corpus quality benchmark",
+  "torch": "2.15.0"
+}

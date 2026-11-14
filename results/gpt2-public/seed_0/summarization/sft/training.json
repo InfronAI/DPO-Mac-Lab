@@ -1,0 +1,12 @@
+{
+  "method": "sft",
+  "seed": 0,
+  "beta": 0.1,
+  "label_smoothing": 0.0,
+  "updates": 16,
+  "examples": 64,
+  "elapsed_seconds": 10.721943249925971,
+  "reference_cached": false,
+  "optimizer": "RMSprop",
+  "learning_rate": 1e-06
+}

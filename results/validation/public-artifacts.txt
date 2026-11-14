@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "expected_variants": 105,
+  "actual_variants": 105,
+  "verified_receipts": 192
+}

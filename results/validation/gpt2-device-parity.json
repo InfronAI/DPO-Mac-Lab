@@ -1,0 +1,49 @@
+{
+  "torch": "2.15.0",
+  "model": "openai-community/gpt2",
+  "results": [
+    {
+      "length": 48,
+      "cpu_loss": 67.53288269042969,
+      "mps_loss": 67.5337142944336,
+      "worst_gradient": [
+        "transformer.h.10.ln_2.weight",
+        0.017063552513718605,
+        5.674223899841309,
+        0.0742335319519043
+      ],
+      "global_gradient_relative_l2": 0.0003771897235428618,
+      "global_gradient_cosine": 0.9999999887107405,
+      "passed": true
+    },
+    {
+      "length": 80,
+      "cpu_loss": 109.6711196899414,
+      "mps_loss": 109.672607421875,
+      "worst_gradient": [
+        "transformer.h.10.ln_2.weight",
+        0.020009897649288177,
+        9.340587615966797,
+        0.14411532878875732
+      ],
+      "global_gradient_relative_l2": 0.0005513964589159074,
+      "global_gradient_cosine": 0.9999996925600638,
+      "passed": false
+    },
+    {
+      "length": 128,
+      "cpu_loss": 111.5110092163086,
+      "mps_loss": 111.5125961303711,
+      "worst_gradient": [
+        "transformer.h.10.ln_2.weight",
+        0.021207295358181,
+        9.306421279907227,
+        0.15232110023498535
+      ],
+      "global_gradient_relative_l2": 0.0005597911900536706,
+      "global_gradient_cosine": 0.9999996718099652,
+      "passed": false
+    }
+  ],
+  "passed": false
+}

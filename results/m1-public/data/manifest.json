@@ -1,0 +1,54 @@
+{
+  "mode": "public",
+  "sampling": "seeded streaming buffer shuffle (256); bounded scan",
+  "seed": 42,
+  "sources": {
+    "stanfordnlp/imdb": "e6281661ce1c48d982bc483cf8a173c1bbeb5d31",
+    "openai/summarize_from_feedback": "a4d82a1068e43c8edee69c452a7e763722bd5496",
+    "CarperAI/openai_summarize_tldr": "4c15ffcc724c4804ecda677e6a63d2d0741f5d09",
+    "Anthropic/hh-rlhf": "09be8c5bbc57cb3887f3a9732ad6aa7ec602a1fa",
+    "abisee/cnn_dailymail": "96df5e686bee6baa90b8bee7c28b81fa3fa6223d"
+  },
+  "files": {
+    "dialogue/sft.jsonl": {
+      "sha256": "1201798e41e0d02c495cabaea5d8a0773e634d28b8b486f0322f2431c33a3a25",
+      "rows": 64
+    },
+    "dialogue/test.jsonl": {
+      "sha256": "aed0aa74f3e26f15af6839093167a7d4ff0b49fe86777bcbf167d7fe4a328680",
+      "rows": 16
+    },
+    "dialogue/train.jsonl": {
+      "sha256": "1201798e41e0d02c495cabaea5d8a0773e634d28b8b486f0322f2431c33a3a25",
+      "rows": 64
+    },
+    "ood.jsonl": {
+      "sha256": "e0233793cf57e4c0ff6f26211e0c9f1a442df1af95eb1379755a2a353d334297",
+      "rows": 16
+    },
+    "sentiment/sft.jsonl": {
+      "sha256": "f31d0a2f304b38ccc08e2c4ed1d225ed29e4469dc393807295a8b5ddd9c43ada",
+      "rows": 64
+    },
+    "sentiment/test.jsonl": {
+      "sha256": "e112c96b0832f3dc18b07b0b0cba38b5dbe306f55b76953f6abfa42f4b6cb552",
+      "rows": 16
+    },
+    "sentiment/train.jsonl": {
+      "sha256": "f31d0a2f304b38ccc08e2c4ed1d225ed29e4469dc393807295a8b5ddd9c43ada",
+      "rows": 64
+    },
+    "summarization/sft.jsonl": {
+      "sha256": "14108656a26dfe9a3093deea8c8e99525074e4fa369432bfc45a3de19b569b52",
+      "rows": 64
+    },
+    "summarization/test.jsonl": {
+      "sha256": "d12fc02a0c15c2f9852e17203a2f5038b306f7b4ea047f469fbeaed07e7be4bc",
+      "rows": 16
+    },
+    "summarization/train.jsonl": {
+      "sha256": "4ba2c182b4803e34ce0695e32ff21987bc5d473660702f86762ca6c0cca091ab",
+      "rows": 64
+    }
+  }
+}

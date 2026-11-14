@@ -1,0 +1,10 @@
+{
+  "train": {
+    "before": 64,
+    "after": 64
+  },
+  "test": {
+    "before": 16,
+    "after": 16
+  }
+}

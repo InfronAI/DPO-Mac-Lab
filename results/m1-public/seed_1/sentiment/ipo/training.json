@@ -1,0 +1,12 @@
+{
+  "method": "ipo",
+  "seed": 1,
+  "beta": 0.1,
+  "label_smoothing": 0.0,
+  "updates": 24,
+  "examples": 96,
+  "elapsed_seconds": 7.157347042113543,
+  "reference_cached": true,
+  "optimizer": "RMSprop",
+  "learning_rate": 1e-06
+}

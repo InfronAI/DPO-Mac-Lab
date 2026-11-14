@@ -1,0 +1,2 @@
+{"index": 0, "prompt": "Review 10000: This movie", "completion": "to 10001 stayed TL 10000 practice 5 10002", "baseline": " is delightful and enjoyable.", "temperature": 1.0, "generated_tokens": 8, "best_of": 2, "score": -0.7510042786598206, "oracle_score": 0.0}
+{"index": 1, "prompt": "Review 10001: This movie", "completion": "2 bicycle 2 day Alex can Review", "baseline": " is delightful and enjoyable.", "temperature": 1.0, "generated_tokens": 8, "best_of": 2, "score": -0.0892026424407959, "oracle_score": 0.0}

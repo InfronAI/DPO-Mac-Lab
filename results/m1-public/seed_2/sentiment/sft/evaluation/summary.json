@@ -1,0 +1,146 @@
+{
+  "task": "sentiment",
+  "seed": 2,
+  "method": "sft",
+  "beta": null,
+  "pairs": {
+    "loss": {
+      "mean": 0.6931471824645996,
+      "ci95": [
+        0.6931471824645996,
+        0.6931471824645996
+      ],
+      "n": 96
+    },
+    "reward_margin": {
+      "mean": 0.0,
+      "ci95": [
+        0.0,
+        0.0
+      ],
+      "n": 96
+    },
+    "preference_accuracy": {
+      "mean": 0.5,
+      "ci95": [
+        0.5,
+        0.5
+      ],
+      "n": 96
+    },
+    "chosen_nll_per_token": {
+      "mean": 51.369626610258706,
+      "ci95": [
+        51.182854113456536,
+        51.53205528898321
+      ],
+      "n": 96
+    }
+  },
+  "generation": {
+    "0.0": {
+      "score": {
+        "mean": 0.24830520595423877,
+        "ci95": [
+          0.0011631699744611979,
+          0.7419849018915556
+        ],
+        "n": 4
+      },
+      "sequence_kl_mc": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "token_overlap_f1": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "generated_tokens": {
+        "mean": 24.0,
+        "ci95": [
+          24.0,
+          24.0
+        ],
+        "n": 4
+      }
+    },
+    "0.25": {
+      "score": {
+        "mean": 0.2040273440652527,
+        "ci95": [
+          0.0009982265764847398,
+          0.6093856272345874
+        ],
+        "n": 4
+      },
+      "sequence_kl_mc": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "token_overlap_f1": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "generated_tokens": {
+        "mean": 24.0,
+        "ci95": [
+          24.0,
+          24.0
+        ],
+        "n": 4
+      }
+    },
+    "1.0": {
+      "score": {
+        "mean": 0.5000341751729138,
+        "ci95": [
+          0.006968988687731326,
+          0.9930993616580963
+        ],
+        "n": 4
+      },
+      "sequence_kl_mc": {
+        "mean": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "n": 4
+      },
+      "token_overlap_f1": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "generated_tokens": {
+        "mean": 24.0,
+        "ci95": [
+          24.0,
+          24.0
+        ],
+        "n": 4
+      }
+    }
+  },
+  "ood": null,
+  "score_kind": "sentiment oracle probability"
+}

@@ -1,0 +1,79 @@
+{
+  "task": "summarization",
+  "seed": 0,
+  "method": "best_of_2",
+  "beta": null,
+  "pairs": null,
+  "generation": {
+    "0.0": {
+      "score": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "sequence_kl_mc": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "token_overlap_f1": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "generated_tokens": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      }
+    },
+    "1.0": {
+      "score": {
+        "mean": 0.4726485311985016,
+        "ci95": [
+          -0.23129695653915405,
+          1.1765940189361572
+        ],
+        "n": 2
+      },
+      "sequence_kl_mc": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "token_overlap_f1": {
+        "mean": 0.20535714285714285,
+        "ci95": [
+          0.125,
+          0.2857142857142857
+        ],
+        "n": 2
+      },
+      "generated_tokens": {
+        "mean": 8.0,
+        "ci95": [
+          8.0,
+          8.0
+        ],
+        "n": 2
+      }
+    }
+  },
+  "ood": null,
+  "score_kind": "learned reward used for selection; not an independent quality evaluator"
+}

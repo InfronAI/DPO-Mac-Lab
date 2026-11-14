@@ -1,0 +1,2 @@
+{"step": 1, "epoch": 0, "examples": 4, "loss": 0.6931471824645996, "grad_norm": 12.830633163452148, "lr": 2.5e-05, "elapsed_seconds": 0.03204537462443113, "reward_margin": 0.0}
+{"step": 2, "epoch": 0, "examples": 8, "loss": 0.4537910223007202, "grad_norm": 8.591140747070312, "lr": 5e-05, "elapsed_seconds": 0.061147833708673716, "reward_margin": 0.5546574592590332}

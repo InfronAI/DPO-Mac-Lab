@@ -1,0 +1,112 @@
+{
+  "task": "dialogue",
+  "seed": 0,
+  "method": "preferred_ft",
+  "beta": 0.1,
+  "pairs": {
+    "loss": {
+      "mean": 0.6316438168287277,
+      "ci95": [
+        0.6311630308628082,
+        0.6320279538631439
+      ],
+      "n": 4
+    },
+    "reward_margin": {
+      "mean": 0.12703895568847656,
+      "ci95": [
+        0.12621860206127167,
+        0.12806587666273117
+      ],
+      "n": 4
+    },
+    "preference_accuracy": {
+      "mean": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "n": 4
+    },
+    "chosen_nll_per_token": {
+      "mean": 3.173539373609755,
+      "ci95": [
+        3.172646628485786,
+        3.1746458477444115
+      ],
+      "n": 4
+    }
+  },
+  "generation": {
+    "0.0": {
+      "score": {
+        "mean": 1.3885568976402283,
+        "ci95": [
+          1.3880208730697632,
+          1.3890929222106934
+        ],
+        "n": 2
+      },
+      "sequence_kl_mc": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "token_overlap_f1": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "generated_tokens": {
+        "mean": 8.0,
+        "ci95": [
+          8.0,
+          8.0
+        ],
+        "n": 2
+      }
+    },
+    "1.0": {
+      "score": {
+        "mean": 1.4096984267234802,
+        "ci95": [
+          1.4064363241195679,
+          1.4129605293273926
+        ],
+        "n": 2
+      },
+      "sequence_kl_mc": {
+        "mean": 0.23025208711624146,
+        "ci95": [
+          0.22276943922042847,
+          0.23773473501205444
+        ],
+        "n": 2
+      },
+      "token_overlap_f1": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "generated_tokens": {
+        "mean": 8.0,
+        "ci95": [
+          8.0,
+          8.0
+        ],
+        "n": 2
+      }
+    }
+  },
+  "ood": null,
+  "score_kind": "learned reward diagnostic, not a win rate"
+}

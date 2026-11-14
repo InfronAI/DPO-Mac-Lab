@@ -1,0 +1,4 @@
+{"index": 0, "prompt": "Review 10000: This movie", "completion": "is delightful and enjoyable .", "baseline": " is delightful and enjoyable.", "temperature": 0.0, "generated_tokens": 6, "best_of": 1, "score": 1.0}
+{"index": 1, "prompt": "Review 10001: This movie", "completion": "is delightful and enjoyable .", "baseline": " is delightful and enjoyable.", "temperature": 0.0, "generated_tokens": 6, "best_of": 1, "score": 1.0}
+{"index": 0, "prompt": "Review 10000: This movie", "completion": "10003 to dull 10001 recipes stayed movie TL", "baseline": " is delightful and enjoyable.", "temperature": 1.0, "generated_tokens": 8, "best_of": 1, "score": 0.0, "sequence_kl_mc": 0.032145895063877106}
+{"index": 1, "prompt": "Review 10001: This movie", "completion": "school enjoyable 4 bicycle 10002 2 10000", "baseline": " is delightful and enjoyable.", "temperature": 1.0, "generated_tokens": 8, "best_of": 1, "score": 1.0, "sequence_kl_mc": 0.031774669885635376}

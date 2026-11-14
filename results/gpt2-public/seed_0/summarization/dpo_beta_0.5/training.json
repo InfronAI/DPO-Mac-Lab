@@ -1,0 +1,12 @@
+{
+  "method": "dpo",
+  "seed": 0,
+  "beta": 0.5,
+  "label_smoothing": 0.0,
+  "updates": 16,
+  "examples": 64,
+  "elapsed_seconds": 22.042242541909218,
+  "reference_cached": true,
+  "optimizer": "RMSprop",
+  "learning_rate": 1e-06
+}

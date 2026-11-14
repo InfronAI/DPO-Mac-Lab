@@ -1,0 +1,113 @@
+{
+  "task": "summarization",
+  "seed": 0,
+  "method": "best_of_4",
+  "beta": null,
+  "pairs": null,
+  "generation": {
+    "0.0": {
+      "score": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "sequence_kl_mc": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "token_overlap_f1": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "generated_tokens": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      }
+    },
+    "0.25": {
+      "score": {
+        "mean": -2.9435832500457764,
+        "ci95": [
+          -3.667098879814148,
+          -2.1646708250045776
+        ],
+        "n": 4
+      },
+      "sequence_kl_mc": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "token_overlap_f1": {
+        "mean": 0.019230769230769232,
+        "ci95": [
+          0.0,
+          0.057692307692307696
+        ],
+        "n": 4
+      },
+      "generated_tokens": {
+        "mean": 24.0,
+        "ci95": [
+          24.0,
+          24.0
+        ],
+        "n": 4
+      }
+    },
+    "1.0": {
+      "score": {
+        "mean": -3.2882481813430786,
+        "ci95": [
+          -4.645356833934784,
+          -2.0011683106422424
+        ],
+        "n": 4
+      },
+      "sequence_kl_mc": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "token_overlap_f1": {
+        "mean": 0.019230769230769232,
+        "ci95": [
+          0.0,
+          0.057692307692307696
+        ],
+        "n": 4
+      },
+      "generated_tokens": {
+        "mean": 24.0,
+        "ci95": [
+          24.0,
+          24.0
+        ],
+        "n": 4
+      }
+    }
+  },
+  "ood": null,
+  "score_kind": "learned reward used for selection; not an independent quality evaluator"
+}

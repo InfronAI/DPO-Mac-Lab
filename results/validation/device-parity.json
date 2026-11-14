@@ -1,0 +1,37 @@
+{
+  "torch": "2.15.0",
+  "model": "EleutherAI/pythia-70m-deduped",
+  "results": [
+    {
+      "length": 48,
+      "cpu_loss": 1291.6810302734375,
+      "mps_loss": 1291.6827392578125,
+      "worst_gradient": [
+        "gpt_neox.layers.5.attention.query_key_value.weight",
+        0.016137942671775818
+      ],
+      "passed": true
+    },
+    {
+      "length": 80,
+      "cpu_loss": 1346.384765625,
+      "mps_loss": 1346.38525390625,
+      "worst_gradient": [
+        "gpt_neox.layers.5.attention.query_key_value.weight",
+        0.012907245196402073
+      ],
+      "passed": true
+    },
+    {
+      "length": 128,
+      "cpu_loss": 1351.6339111328125,
+      "mps_loss": 1351.6326904296875,
+      "worst_gradient": [
+        "gpt_neox.layers.5.attention.query_key_value.weight",
+        0.010758230462670326
+      ],
+      "passed": true
+    }
+  ],
+  "passed": true
+}

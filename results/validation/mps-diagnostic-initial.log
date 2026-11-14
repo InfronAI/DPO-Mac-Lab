@@ -1,0 +1,22 @@
+/Users/apple/Projects/direct-preference-optimization/scripts/diagnose_mps.py:16: UserWarning: Anomaly Detection has been enabled. This mode will increase the runtime and should only be enabled for debugging.
+  with torch.autograd.detect_anomaly():
+step 0 row 23 loss 0.6931471824645996
+step 0 row 8 loss 0.6931471824645996
+step 0 row 11 loss 0.6931471824645996
+step 0 row 7 loss 0.6931471824645996
+gradient norm 484348.25 bad []
+step 1 row 48 loss 0.6728256940841675
+step 1 row 13 loss 0.6990359425544739
+step 1 row 1 loss 0.6883674263954163
+step 1 row 88 loss 0.689911425113678
+gradient norm 169.0817108154297 bad []
+step 2 row 91 loss 0.6975758671760559
+step 2 row 54 loss 0.6916162967681885
+step 2 row 16 loss 0.6808639168739319
+step 2 row 63 loss 0.6838886141777039
+gradient norm 2771912.0 bad []
+step 3 row 52 loss 0.48113197088241577
+step 3 row 41 loss 0.6953773498535156
+step 3 row 78 loss 0.7012239098548889
+step 3 row 2 loss 0.49999064207077026
+gradient norm 92637.1328125 bad []

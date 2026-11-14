@@ -1,0 +1,27 @@
+
+=== sentiment / seed 0 / mps ===
+sft step=1 loss=1788.9459
+sft step=8 loss=1818.3138
+sft step=16 loss=1673.0552
+--- base ---
+--- sft ---
+--- dpo_beta_0.05 ---
+dpo step=1 loss=0.6931
+dpo step=8 loss=0.6597
+dpo step=16 loss=0.6302
+dpo step=24 loss=0.5567
+--- dpo_beta_0.1 ---
+dpo step=1 loss=0.6931
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/apple/Projects/direct-preference-optimization/dpo_lab/__main__.py", line 2, in <module>
+    main()
+  File "/Users/apple/Projects/direct-preference-optimization/dpo_lab/cli.py", line 30, in main
+    run(args.config,args.output,args.device,args.data,args.resume)
+  File "/Users/apple/Projects/direct-preference-optimization/dpo_lab/pipeline.py", line 166, in run
+    train_stage(model,tokenizer,train_items,train_refs,cfg,method,path,device,seed,beta,
+  File "/Users/apple/Projects/direct-preference-optimization/dpo_lab/engine.py", line 105, in train_stage
+    if not torch.isfinite(norm): raise FloatingPointError('Nonfinite gradient')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FloatingPointError: Nonfinite gradient

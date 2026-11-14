@@ -13,6 +13,7 @@ import json
 import socket
 from typing import Optional, Set
 import resource
+from dpo_lab.runtime import select_device, seed_everything
 
 
 OmegaConf.register_new_resolver("get_local_run_dir", lambda exp_name, local_dirs: get_local_run_dir(exp_name, local_dirs))
@@ -49,6 +50,16 @@ def worker_main(rank: int, world_size: int, config: DictConfig, policy: nn.Modul
 def main(config: DictConfig):
     """Main entry point for training. Validates config, creates/initializes model(s), and kicks off worker process(es)."""
 
+    seed_everything(config.seed)
+    device = select_device(config.device)
+    if config.trainer != 'BasicTrainer' and device.type != 'cuda':
+        raise ValueError('FSDP and tensor parallel require CUDA; use trainer=BasicTrainer on Mac/CPU')
+    if config.batch_size < 1 or config.gradient_accumulation_steps < 1:
+        raise ValueError('Batch size and gradient accumulation must be positive')
+    if not 0 < config.max_prompt_length < config.max_length:
+        raise ValueError('Require 0 < max_prompt_length < max_length')
+    if config.eval_every < config.batch_size:
+        raise ValueError('eval_every must be at least batch_size')
     # Resolve hydra references, e.g. so we don't re-compute the run directory
     OmegaConf.resolve(config)
 
@@ -68,6 +79,7 @@ def main(config: DictConfig):
 
     print(OmegaConf.to_yaml(config))
 
+    os.makedirs(config.local_run_dir, exist_ok=True)
     config_path = os.path.join(config.local_run_dir, 'config.yaml')
     with open(config_path, 'w') as f:
         OmegaConf.save(config, f)
@@ -78,11 +90,16 @@ def main(config: DictConfig):
  
     os.environ['XDG_CACHE_HOME'] = get_local_dir(config.local_dirs)
     print('building policy')
-    model_kwargs = {'device_map': 'balanced'} if config.trainer == 'BasicTrainer' else {}
+    model_kwargs = {'device_map': 'balanced'} if config.trainer == 'BasicTrainer' and device.type == 'cuda' else {}
     policy_dtype = getattr(torch, config.model.policy_dtype)
     policy = transformers.AutoModelForCausalLM.from_pretrained(
         config.model.name_or_path, cache_dir=get_local_dir(config.local_dirs), low_cpu_mem_usage=True, torch_dtype=policy_dtype, **model_kwargs)
     disable_dropout(policy)
+    if config.trainer == 'BasicTrainer' and device.type != 'cuda':
+        policy.to(device)
+    if config.activation_checkpointing and config.trainer == 'BasicTrainer':
+        policy.gradient_checkpointing_enable(gradient_checkpointing_kwargs={'use_reentrant': False})
+        policy.config.use_cache = False
 
     if config.loss.name in {'dpo', 'ipo'}:
         print('building reference model')
@@ -90,6 +107,9 @@ def main(config: DictConfig):
         reference_model = transformers.AutoModelForCausalLM.from_pretrained(
             config.model.name_or_path, cache_dir=get_local_dir(config.local_dirs), low_cpu_mem_usage=True, torch_dtype=reference_model_dtype, **model_kwargs)
         disable_dropout(reference_model)
+        reference_model.requires_grad_(False).eval()
+        if config.trainer == 'BasicTrainer' and device.type != 'cuda':
+            reference_model.to(device)
     else:
         reference_model = None
 

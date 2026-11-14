@@ -1,0 +1,7 @@
+
+=== sentiment / seed 0 / cpu ===
+
+=== summarization / seed 0 / cpu ===
+
+=== dialogue / seed 0 / cpu ===
+Completed 32 evaluated variants. Results: results/smoke-cpu

@@ -1,0 +1,12 @@
+{
+  "method": "reference_free",
+  "seed": 2,
+  "beta": 0.1,
+  "label_smoothing": 0.0,
+  "updates": 24,
+  "examples": 96,
+  "elapsed_seconds": 6.89256195910275,
+  "reference_cached": true,
+  "optimizer": "RMSprop",
+  "learning_rate": 1e-06
+}

@@ -1,0 +1,14 @@
+{
+  "files": {
+    "metrics.jsonl": "78f8d7029ea4535aabdafd802fe30fd821f8482921d7fd67978ebfffeb02471d",
+    "model/config.json": "07fed70b33153a66d351b629a9e491bbe2cb728b6c33ac7ba748d1ec6a9384f0",
+    "model/generation_config.json": "2258b3a1afa11b5a2735a0fe2364b161873717834b23872ed16fb99456f5a63e",
+    "model/merges.txt": "1ce1664773c50f3e0cc8842619a93edc4624525b728b188a9e0be33b7726adc5",
+    "model/model.safetensors": "7392cc9186ea49e09e8f0864ffb3f30960936d03b75e747518b248e7f7075822",
+    "model/special_tokens_map.json": "8bcf4e58d0970bbcb3b111a4c1e297c082fbf61253b14b3c0c8f2972ccb61ba4",
+    "model/tokenizer.json": "1fe93b6152957cf9cfd6d89002467f789ce8b3f3e000b3a2edf27c808ddd0b9e",
+    "model/tokenizer_config.json": "d0e99e3da75fd15dd9a9747896f860100a13ef7e92cc9689b63d43f18652b24f",
+    "model/vocab.json": "3ba3c3109ff33976c4bd966589c11ee14fcaa1f4c9e5e154c2ed7f99d80709e7",
+    "training.json": "c3418cf610592ca05b3d28a615ba68382f130b09b8925c4a1be9ff8633342cdb"
+  }
+}

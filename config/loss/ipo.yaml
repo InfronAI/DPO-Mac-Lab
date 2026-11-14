@@ -1,0 +1,4 @@
+name: ipo
+beta: 0.1
+reference_free: false
+label_smoothing: 0.0

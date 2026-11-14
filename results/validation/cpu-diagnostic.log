@@ -1,0 +1,62 @@
+/Users/apple/Projects/direct-preference-optimization/scripts/diagnose_mps.py:16: UserWarning: Anomaly Detection has been enabled. This mode will increase the runtime and should only be enabled for debugging.
+  with torch.autograd.detect_anomaly():
+step 0 row 23 loss 0.6926102042198181
+step 0 row 8 loss 0.6928847432136536
+step 0 row 11 loss 0.6932142972946167
+step 0 row 7 loss 0.6929519176483154
+gradient norm 129.48048400878906 bad []
+step 1 row 48 loss 0.6580789089202881
+step 1 row 13 loss 0.6970610618591309
+step 1 row 1 loss 0.6917260885238647
+step 1 row 88 loss 0.6915493607521057
+gradient norm 162.3254852294922 bad []
+step 2 row 91 loss 0.7015993595123291
+step 2 row 54 loss 0.7059106826782227
+step 2 row 16 loss 0.6848384737968445
+step 2 row 63 loss 0.67360919713974
+gradient norm 140.3711700439453 bad []
+step 3 row 52 loss 0.5131867527961731
+step 3 row 41 loss 0.726182758808136
+step 3 row 78 loss 0.6944847702980042
+step 3 row 2 loss 0.47602495551109314
+gradient norm 112.11773681640625 bad []
+step 4 row 47 loss 0.6959648728370667
+step 4 row 84 loss 0.3710022568702698
+step 4 row 76 loss 0.7201501727104187
+step 4 row 66 loss 0.6793038845062256
+gradient norm 101.49662780761719 bad []
+step 5 row 19 loss 1.1502110958099365
+step 5 row 6 loss 1.100846529006958
+step 5 row 24 loss 0.5788791179656982
+step 5 row 10 loss 0.8171923160552979
+gradient norm 177.1907501220703 bad []
+step 6 row 59 loss 0.6745489835739136
+step 6 row 30 loss 0.7146628499031067
+step 6 row 22 loss 0.5153462290763855
+step 6 row 29 loss 0.7411140203475952
+gradient norm 105.79328918457031 bad []
+step 7 row 80 loss 0.34587743878364563
+step 7 row 37 loss 1.2821288108825684
+step 7 row 90 loss 0.5330592393875122
+step 7 row 77 loss 0.20662157237529755
+gradient norm 114.64505004882812 bad []
+step 8 row 43 loss 0.27846869826316833
+step 8 row 95 loss 0.3063673675060272
+step 8 row 83 loss 0.366518497467041
+step 8 row 28 loss 0.09861710667610168
+gradient norm 62.46635055541992 bad []
+step 9 row 34 loss 0.409065306186676
+step 9 row 73 loss 1.0496976375579834
+step 9 row 44 loss 0.9746698141098022
+step 9 row 14 loss 0.5062597990036011
+gradient norm 136.52268981933594 bad []
+step 10 row 81 loss 0.08658874779939651
+step 10 row 70 loss 1.3464527130126953
+step 10 row 4 loss 0.3986301124095917
+step 10 row 20 loss 0.1565745323896408
+gradient norm 101.15096282958984 bad []
+step 11 row 15 loss 0.7279424667358398
+step 11 row 21 loss 1.441887617111206
+step 11 row 31 loss 0.26822784543037415
+step 11 row 75 loss 0.23238757252693176
+gradient norm 113.86151885986328 bad []

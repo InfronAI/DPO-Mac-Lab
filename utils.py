@@ -47,9 +47,12 @@ def get_local_dir(prefixes_to_resolve: List[str]) -> str:
     """Return the path to the cache directory for this user."""
     for prefix in prefixes_to_resolve:
         if os.path.exists(prefix):
-            return f"{prefix}/{getpass.getuser()}"
-    os.makedirs(prefix)
-    return f"{prefix}/{getpass.getuser()}"
+            directory = f"{prefix}/{getpass.getuser()}"
+            os.makedirs(directory, exist_ok=True)
+            return directory
+    directory = f"{prefix}/{getpass.getuser()}"
+    os.makedirs(directory, exist_ok=True)
+    return directory
     
 
 def get_local_run_dir(exp_name: str, local_dirs: List[str]) -> str:
@@ -63,9 +66,9 @@ def get_local_run_dir(exp_name: str, local_dirs: List[str]) -> str:
 
 def slice_and_move_batch_for_device(batch: Dict, rank: int, world_size: int, device: str) -> Dict:
     """Slice a batch into chunks, and move each chunk to the specified device."""
-    chunk_size = len(list(batch.values())[0]) // world_size
-    start = chunk_size * rank
-    end = chunk_size * (rank + 1)
+    size = len(next(iter(batch.values())))
+    start = size * rank // world_size
+    end = size * (rank + 1) // world_size
     sliced = {k: v[start:end] for k, v in batch.items()}
     on_device = {k: (v.to(device) if isinstance(v, torch.Tensor) else v) for k, v in sliced.items()}
     return on_device

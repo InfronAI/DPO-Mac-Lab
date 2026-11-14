@@ -1,0 +1,12 @@
+{
+  "method": "cdpo",
+  "seed": 2,
+  "beta": 0.1,
+  "label_smoothing": 0.1,
+  "updates": 16,
+  "examples": 64,
+  "elapsed_seconds": 10.99703725008294,
+  "reference_cached": true,
+  "optimizer": "RMSprop",
+  "learning_rate": 1e-06
+}

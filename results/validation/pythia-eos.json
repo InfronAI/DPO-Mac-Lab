@@ -1,0 +1,11 @@
+{
+  "model": "EleutherAI/pythia-70m-deduped",
+  "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c",
+  "text": "The movie was good and I really enjoyed it. I thought it was interesting.",
+  "eos_token_id": 0,
+  "eos_log_probability": -1232.634521484375,
+  "mean_non_eos_log_probability": -2.9297876358032227,
+  "future_token_max_logit_difference": 0.0,
+  "scope": "Single fixed diagnostic sentence; not a corpus quality benchmark",
+  "torch": "2.15.0"
+}

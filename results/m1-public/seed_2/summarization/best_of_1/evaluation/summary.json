@@ -1,0 +1,113 @@
+{
+  "task": "summarization",
+  "seed": 2,
+  "method": "best_of_1",
+  "beta": null,
+  "pairs": null,
+  "generation": {
+    "0.0": {
+      "score": {
+        "mean": 6.761768817901611,
+        "ci95": [
+          6.235543251037598,
+          7.523350715637207
+        ],
+        "n": 4
+      },
+      "sequence_kl_mc": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "token_overlap_f1": {
+        "mean": 0.02,
+        "ci95": [
+          0.0,
+          0.06
+        ],
+        "n": 4
+      },
+      "generated_tokens": {
+        "mean": 24.0,
+        "ci95": [
+          24.0,
+          24.0
+        ],
+        "n": 4
+      }
+    },
+    "0.25": {
+      "score": {
+        "mean": 6.868698596954346,
+        "ci95": [
+          6.451372146606445,
+          7.530940055847168
+        ],
+        "n": 4
+      },
+      "sequence_kl_mc": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "token_overlap_f1": {
+        "mean": 0.032407407407407406,
+        "ci95": [
+          0.0,
+          0.06481481481481481
+        ],
+        "n": 4
+      },
+      "generated_tokens": {
+        "mean": 24.0,
+        "ci95": [
+          24.0,
+          24.0
+        ],
+        "n": 4
+      }
+    },
+    "1.0": {
+      "score": {
+        "mean": 6.245616912841797,
+        "ci95": [
+          4.7904582023620605,
+          7.700775623321533
+        ],
+        "n": 4
+      },
+      "sequence_kl_mc": {
+        "mean": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "n": 4
+      },
+      "token_overlap_f1": {
+        "mean": 0.048917748917748916,
+        "ci95": [
+          0.014285714285714285,
+          0.0800865800865801
+        ],
+        "n": 4
+      },
+      "generated_tokens": {
+        "mean": 24.0,
+        "ci95": [
+          24.0,
+          24.0
+        ],
+        "n": 4
+      }
+    }
+  },
+  "ood": null,
+  "score_kind": "learned reward used for selection; not an independent quality evaluator"
+}

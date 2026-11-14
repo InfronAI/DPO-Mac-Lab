@@ -1,0 +1,32 @@
+{
+  "fingerprint": "593fab9b2fe90b8feab16d1f696a00db1f8bdbba9962289cc08bde438c83c905",
+  "identity": {
+    "model.safetensors": "5e88cdd1908e641a09648d56a781107adf2953feaf5804c8f3d156a9ae39958c"
+  },
+  "values": [
+    {
+      "chosen": -30.49884605407715,
+      "chosen_mean": -3.3887606726752386,
+      "rejected": -32.95888900756836,
+      "rejected_mean": -4.119861125946045
+    },
+    {
+      "chosen": -30.490821838378906,
+      "chosen_mean": -3.3878690931532116,
+      "rejected": -32.9552116394043,
+      "rejected_mean": -4.119401454925537
+    },
+    {
+      "chosen": -30.502735137939453,
+      "chosen_mean": -3.3891927931043835,
+      "rejected": -32.96853256225586,
+      "rejected_mean": -4.121066570281982
+    },
+    {
+      "chosen": -30.5119686126709,
+      "chosen_mean": -3.390218734741211,
+      "rejected": -32.97209167480469,
+      "rejected_mean": -4.121511459350586
+    }
+  ]
+}

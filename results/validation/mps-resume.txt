@@ -1,0 +1,7 @@
+
+=== sentiment / seed 0 / mps ===
+
+=== summarization / seed 0 / mps ===
+
+=== dialogue / seed 0 / mps ===
+Completed 32 evaluated variants. Results: results/smoke-mps

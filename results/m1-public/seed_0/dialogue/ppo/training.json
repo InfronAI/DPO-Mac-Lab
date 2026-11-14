@@ -1,0 +1,8 @@
+{
+  "method": "ppo",
+  "updates": 8,
+  "rollouts": 16,
+  "elapsed_seconds": 8.182056625373662,
+  "seed": 0,
+  "kl_coef": 0.1
+}

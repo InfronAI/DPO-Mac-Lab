@@ -1,0 +1,42 @@
+[
+  {
+    "method": "sft",
+    "device": "mps",
+    "examples": 5,
+    "final_metrics": {
+      "logps_eval/chosen": -37.82575607299805,
+      "loss/eval": 37.82575607299805
+    },
+    "passed": true
+  },
+  {
+    "method": "dpo",
+    "device": "mps",
+    "examples": 5,
+    "final_metrics": {
+      "rewards_eval/chosen": 2.536773718020413e-05,
+      "rewards_eval/rejected": -2.136230432370212e-05,
+      "rewards_eval/accuracies": 1.0,
+      "rewards_eval/margins": 4.673004150390625e-05,
+      "logps_eval/rejected": -33.162753105163574,
+      "logps_eval/chosen": -37.82550239562988,
+      "loss/eval": 0.6931238174438477
+    },
+    "passed": true
+  },
+  {
+    "method": "ipo",
+    "device": "mps",
+    "examples": 5,
+    "final_metrics": {
+      "rewards_eval/chosen": 2.610683452530793e-06,
+      "rewards_eval/rejected": -2.896785701977933e-06,
+      "rewards_eval/accuracies": 1.0,
+      "rewards_eval/margins": 5.507469268195564e-06,
+      "logps_eval/rejected": -4.145346403121948,
+      "logps_eval/chosen": -4.20283567905426,
+      "loss/eval": 24.999449729919434
+    },
+    "passed": true
+  }
+]

@@ -1,0 +1,59 @@
+
+=== sentiment / seed 0 / mps ===
+Token indices sequence length is longer than the specified maximum sequence length for this model (1031 > 1024). Running this sequence through the model will result in indexing errors
+sft step=1 loss=516.5451
+sft step=8 loss=460.6605
+sft step=16 loss=386.2457
+--- base ---
+--- sft ---
+--- dpo_beta_0.1 ---
+dpo step=1 loss=0.6931
+dpo step=8 loss=0.6944
+dpo step=16 loss=0.6918
+dpo step=24 loss=0.6952
+--- preferred_ft ---
+preferred_ft step=1 loss=117.2190
+preferred_ft step=8 loss=108.5228
+preferred_ft step=16 loss=92.8979
+preferred_ft step=24 loss=112.6612
+--- unlikelihood ---
+unlikelihood step=1 loss=105.0092
+unlikelihood step=8 loss=96.4163
+unlikelihood step=16 loss=82.2177
+unlikelihood step=24 loss=103.0832
+--- ppo_gt ---
+ppo rollout=1 reward=0.7916
+ppo rollout=2 reward=0.2976
+ppo rollout=3 reward=0.2990
+ppo rollout=4 reward=0.2622
+
+=== summarization / seed 0 / mps ===
+sft step=1 loss=105.7321
+sft step=8 loss=149.5681
+sft step=16 loss=144.9608
+--- base ---
+--- sft ---
+--- dpo_beta_0.5 ---
+dpo step=1 loss=0.6931
+dpo step=8 loss=0.6977
+dpo step=16 loss=0.6858
+--- preferred_ft ---
+preferred_ft step=1 loss=119.4113
+preferred_ft step=8 loss=83.2098
+preferred_ft step=16 loss=108.2770
+
+=== dialogue / seed 0 / mps ===
+sft step=1 loss=165.4946
+sft step=8 loss=197.5865
+sft step=16 loss=190.4122
+--- base ---
+--- sft ---
+--- dpo_beta_0.1 ---
+dpo step=1 loss=0.6931
+dpo step=8 loss=0.6928
+dpo step=16 loss=0.6937
+--- preferred_ft ---
+preferred_ft step=1 loss=164.9697
+preferred_ft step=8 loss=196.9670
+preferred_ft step=16 loss=189.8219
+Completed 17 evaluated variants. Results: results/gpt2-public

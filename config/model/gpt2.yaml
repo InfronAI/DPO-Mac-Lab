@@ -1,0 +1,8 @@
+# Practical full-parameter default for a 16 GB Apple Silicon Mac.
+name_or_path: openai-community/gpt2
+tokenizer_name_or_path: null
+archive: null
+block_name: GPT2Block
+policy_dtype: float32
+fsdp_policy_mp: null
+reference_dtype: float32

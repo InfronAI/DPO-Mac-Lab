@@ -1,0 +1,42 @@
+[
+  {
+    "method": "sft",
+    "device": "cpu",
+    "examples": 5,
+    "final_metrics": {
+      "logps_eval/chosen": -37.82575511932373,
+      "loss/eval": 37.82575511932373
+    },
+    "passed": true
+  },
+  {
+    "method": "dpo",
+    "device": "cpu",
+    "examples": 5,
+    "final_metrics": {
+      "rewards_eval/chosen": 2.5272369839512976e-05,
+      "rewards_eval/rejected": -2.136230477844947e-05,
+      "rewards_eval/accuracies": 1.0,
+      "rewards_eval/margins": 4.663467552745715e-05,
+      "logps_eval/rejected": -33.162753105163574,
+      "logps_eval/chosen": -37.82550239562988,
+      "loss/eval": 0.6931238621473312
+    },
+    "passed": true
+  },
+  {
+    "method": "ipo",
+    "device": "cpu",
+    "examples": 5,
+    "final_metrics": {
+      "rewards_eval/chosen": 2.598762534944399e-06,
+      "rewards_eval/rejected": -2.896785758821352e-06,
+      "rewards_eval/accuracies": 1.0,
+      "rewards_eval/margins": 5.495548293765751e-06,
+      "logps_eval/rejected": -4.145346403121948,
+      "logps_eval/chosen": -4.20283567905426,
+      "loss/eval": 24.99945068359375
+    },
+    "passed": true
+  }
+]

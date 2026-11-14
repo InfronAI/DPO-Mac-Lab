@@ -1,0 +1,2 @@
+{"index": 0, "prompt": "Review 10000: This movie", "completion": "is Assistant I Review", "baseline": " is delightful and enjoyable.", "temperature": 1.0, "generated_tokens": 8, "best_of": 2, "score": 0.06449447572231293, "oracle_score": 0.0}
+{"index": 1, "prompt": "Review 10001: This movie", "completion": "Start home 7 0", "baseline": " is delightful and enjoyable.", "temperature": 1.0, "generated_tokens": 8, "best_of": 2, "score": -0.05567055195569992, "oracle_score": 0.0}

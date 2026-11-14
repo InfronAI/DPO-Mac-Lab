@@ -1,0 +1,104 @@
+{
+  "request_hash": "ef1cf439a66284b7291f223e6ca2e2e1844129e715540c8f085ae2949eab0bbe",
+  "code_hash": "4519cbfc9db90195a96d05ddbe0e3952645c56a92d9d610047e30a1c26a20f5c",
+  "config": {
+    "data_mode": "public",
+    "model": "EleutherAI/pythia-70m-deduped",
+    "model_revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c",
+    "data_seed": 42,
+    "tasks": [
+      "sentiment",
+      "summarization",
+      "dialogue"
+    ],
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "train_examples": 64,
+    "eval_examples": 16,
+    "max_length": 128,
+    "max_prompt_length": 88,
+    "max_new_tokens": 24,
+    "batch_size": 4,
+    "microbatch_size": 1,
+    "sft_epochs": 1,
+    "preference_epochs": 1,
+    "sft_lr": 2e-05,
+    "preference_lr": 1e-06,
+    "warmup_steps": 4,
+    "max_grad_norm": 1.0,
+    "gradient_checkpointing": false,
+    "betas": {
+      "sentiment": [
+        0.05,
+        0.1,
+        1.0,
+        5.0
+      ],
+      "summarization": [
+        0.5
+      ],
+      "dialogue": [
+        0.1
+      ]
+    },
+    "extra_methods": [
+      "preferred_ft",
+      "cdpo",
+      "ipo",
+      "reference_free",
+      "ppo"
+    ],
+    "unlikelihood_alpha": 0.1,
+    "temperatures": [
+      0.0,
+      0.25,
+      1.0
+    ],
+    "generation_examples": 4,
+    "sentiment_prefixes": 16,
+    "pair_candidates": 4,
+    "sentiment_oracle": "distilbert/distilbert-base-uncased-finetuned-sst-2-english",
+    "sentiment_oracle_revision": "714eb0fa89d2f80546fda750413ed43d93601a13",
+    "reward_epochs": 1,
+    "reward_lr": 2e-05,
+    "ppo_steps": 4,
+    "ppo_epochs": 2,
+    "ppo_rollout_batch": 4,
+    "ppo_clip": 0.2,
+    "ppo_value_coef": 0.5,
+    "ppo_lambda": 0.95,
+    "ppo_kl_coef": 0.1,
+    "best_of": [
+      1,
+      4
+    ],
+    "dataset_revisions": {}
+  },
+  "environment": {
+    "python": "3.11.16",
+    "platform": "macOS-26.6.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "device": "mps",
+    "packages": {
+      "torch": "2.15.0",
+      "transformers": "4.51.3",
+      "datasets": "3.5.1",
+      "numpy": "1.26.4",
+      "tokenizers": "0.21.1",
+      "accelerate": "1.6.0"
+    },
+    "base_commit": "f8b8c0f49dc92a430bae41585f9d467d3618fe2f",
+    "working_tree_dirty": true,
+    "mps_available": true,
+    "determinism": "seeded; MPS kernels are not guaranteed bitwise reproducible"
+  },
+  "status": "completed",
+  "scope": "scaled public-data experiment",
+  "paper_scale_reproduction": false,
+  "gpt4_evaluation": "not run",
+  "human_evaluation": "not run",
+  "completed_runs": 105
+}

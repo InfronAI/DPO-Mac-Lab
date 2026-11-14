@@ -1,0 +1,2 @@
+{"index": 0, "prompt": "\n\nHuman: In exercise 10000, how can I learn to cook?\n\nAssistant:", "completion": "to 10001 stayed TL 10000 practice 5 10002", "baseline": " Start with a simple recipe and practice.", "temperature": 1.0, "generated_tokens": 8, "best_of": 2, "score": 1.4216724634170532}
+{"index": 1, "prompt": "\n\nHuman: In exercise 10001, how can I learn to cook?\n\nAssistant:", "completion": "2 bicycle 2 day Alex Review", "baseline": " Start with a simple recipe and practice.", "temperature": 1.0, "generated_tokens": 8, "best_of": 2, "score": 0.465388685464859}

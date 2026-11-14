@@ -1,0 +1,146 @@
+{
+  "task": "dialogue",
+  "seed": 2,
+  "method": "preferred_ft",
+  "beta": 0.1,
+  "pairs": {
+    "loss": {
+      "mean": 23.773906989256226,
+      "ci95": [
+        7.641280715294765,
+        43.161703873308845
+      ],
+      "n": 16
+    },
+    "reward_margin": {
+      "mean": -2.122399989515543,
+      "ci95": [
+        -30.417512532975525,
+        27.356251204945142
+      ],
+      "n": 16
+    },
+    "preference_accuracy": {
+      "mean": 0.4375,
+      "ci95": [
+        0.1875,
+        0.6875
+      ],
+      "n": 16
+    },
+    "chosen_nll_per_token": {
+      "mean": 7.690754992355313,
+      "ci95": [
+        6.659431841354443,
+        9.116124794518846
+      ],
+      "n": 16
+    }
+  },
+  "generation": {
+    "0.0": {
+      "score": {
+        "mean": -5.578241348266602,
+        "ci95": [
+          -5.8315019607543945,
+          -5.324980735778809
+        ],
+        "n": 4
+      },
+      "sequence_kl_mc": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "token_overlap_f1": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "generated_tokens": {
+        "mean": 24.0,
+        "ci95": [
+          24.0,
+          24.0
+        ],
+        "n": 4
+      }
+    },
+    "0.25": {
+      "score": {
+        "mean": -5.212764739990234,
+        "ci95": [
+          -6.093825101852417,
+          -4.293750524520874
+        ],
+        "n": 4
+      },
+      "sequence_kl_mc": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "token_overlap_f1": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "generated_tokens": {
+        "mean": 24.0,
+        "ci95": [
+          24.0,
+          24.0
+        ],
+        "n": 4
+      }
+    },
+    "1.0": {
+      "score": {
+        "mean": -5.46785306930542,
+        "ci95": [
+          -5.738505840301514,
+          -5.163379669189453
+        ],
+        "n": 4
+      },
+      "sequence_kl_mc": {
+        "mean": 610.9921541213989,
+        "ci95": [
+          49.08590126037598,
+          1172.8984069824219
+        ],
+        "n": 4
+      },
+      "token_overlap_f1": {
+        "mean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "n": 0
+      },
+      "generated_tokens": {
+        "mean": 24.0,
+        "ci95": [
+          24.0,
+          24.0
+        ],
+        "n": 4
+      }
+    }
+  },
+  "ood": null,
+  "score_kind": "learned reward diagnostic, not a win rate"
+}

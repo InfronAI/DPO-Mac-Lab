@@ -1,0 +1,12 @@
+{
+  "method": "preferred_ft",
+  "seed": 2,
+  "beta": 0.1,
+  "label_smoothing": 0.0,
+  "updates": 16,
+  "examples": 64,
+  "elapsed_seconds": 4.811960957944393,
+  "reference_cached": true,
+  "optimizer": "RMSprop",
+  "learning_rate": 2e-05
+}

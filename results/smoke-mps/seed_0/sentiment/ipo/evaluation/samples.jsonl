@@ -1,0 +1,4 @@
+{"index": 0, "prompt": "Review 10000: This movie", "completion": "is delightful and enjoyable .", "baseline": " is delightful and enjoyable.", "temperature": 0.0, "generated_tokens": 6, "best_of": 1, "score": 1.0}
+{"index": 1, "prompt": "Review 10001: This movie", "completion": "is delightful and enjoyable .", "baseline": " is delightful and enjoyable.", "temperature": 0.0, "generated_tokens": 6, "best_of": 1, "score": 1.0}
+{"index": 0, "prompt": "Review 10000: This movie", "completion": "is to I ignore practice 10000 rode bicycle", "baseline": " is delightful and enjoyable.", "temperature": 1.0, "generated_tokens": 8, "best_of": 1, "score": 0.0, "sequence_kl_mc": 0.01754952035844326}
+{"index": 1, "prompt": "Review 10001: This movie", "completion": "Start a and enjoyable cook , with fixed", "baseline": " is delightful and enjoyable.", "temperature": 1.0, "generated_tokens": 8, "best_of": 1, "score": 1.0, "sequence_kl_mc": 0.01618245802819729}

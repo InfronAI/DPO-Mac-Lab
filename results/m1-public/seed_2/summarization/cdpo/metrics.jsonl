@@ -1,0 +1,16 @@
+{"step": 1, "epoch": 0, "examples": 4, "loss": 0.6931471824645996, "grad_norm": 3149.12939453125, "lr": 2.5e-07, "elapsed_seconds": 0.6334692500531673, "reward_margin": 0.0}
+{"step": 2, "epoch": 0, "examples": 8, "loss": 1.4541355073451996, "grad_norm": 5748.8271484375, "lr": 5e-07, "elapsed_seconds": 1.187149832956493, "reward_margin": -0.8847904205322266}
+{"step": 3, "epoch": 0, "examples": 12, "loss": 1.7293289080262184, "grad_norm": 3049.971923828125, "lr": 7.5e-07, "elapsed_seconds": 1.6832919581793249, "reward_margin": -1.1037349700927734}
+{"step": 4, "epoch": 0, "examples": 16, "loss": 1.0144265741109848, "grad_norm": 1160.208740234375, "lr": 1e-06, "elapsed_seconds": 2.404213458299637, "reward_margin": 0.7681026458740234}
+{"step": 5, "epoch": 0, "examples": 20, "loss": 1.4178174138069153, "grad_norm": 887.0804443359375, "lr": 1e-06, "elapsed_seconds": 3.8955491674132645, "reward_margin": 1.5448226928710938}
+{"step": 6, "epoch": 0, "examples": 24, "loss": 1.025333195924759, "grad_norm": 673.411376953125, "lr": 1e-06, "elapsed_seconds": 4.463197375182062, "reward_margin": 5.437599182128906}
+{"step": 7, "epoch": 0, "examples": 28, "loss": 4.615919500589371, "grad_norm": 4136.2265625, "lr": 1e-06, "elapsed_seconds": 5.03826987510547, "reward_margin": -1.7036972045898438}
+{"step": 8, "epoch": 0, "examples": 32, "loss": 0.5617079064249992, "grad_norm": 326.752685546875, "lr": 1e-06, "elapsed_seconds": 5.585780292283744, "reward_margin": 0.805389404296875}
+{"step": 9, "epoch": 0, "examples": 36, "loss": 1.312023013830185, "grad_norm": 2553.99462890625, "lr": 1e-06, "elapsed_seconds": 6.112482083030045, "reward_margin": -0.3351612091064453}
+{"step": 10, "epoch": 0, "examples": 40, "loss": 0.8876615017652512, "grad_norm": 1617.27490234375, "lr": 1e-06, "elapsed_seconds": 6.796972875017673, "reward_margin": 2.2370357513427734}
+{"step": 11, "epoch": 0, "examples": 44, "loss": 0.4975922256708145, "grad_norm": 1031.0965576171875, "lr": 1e-06, "elapsed_seconds": 7.60899820830673, "reward_margin": 2.4676084518432617}
+{"step": 12, "epoch": 0, "examples": 48, "loss": 1.0515053868293762, "grad_norm": 1910.8433837890625, "lr": 1e-06, "elapsed_seconds": 8.22230870835483, "reward_margin": 1.795792579650879}
+{"step": 13, "epoch": 0, "examples": 52, "loss": 0.7483449354767799, "grad_norm": 1200.755859375, "lr": 1e-06, "elapsed_seconds": 8.69971983321011, "reward_margin": 0.3592796325683594}
+{"step": 14, "epoch": 0, "examples": 56, "loss": 1.2487626895308495, "grad_norm": 1356.683349609375, "lr": 1e-06, "elapsed_seconds": 9.151374333072454, "reward_margin": 2.4595470428466797}
+{"step": 15, "epoch": 0, "examples": 60, "loss": 1.0285699963569641, "grad_norm": 1348.263427734375, "lr": 1e-06, "elapsed_seconds": 9.594445625320077, "reward_margin": 7.261514663696289}
+{"step": 16, "epoch": 0, "examples": 64, "loss": 1.9852711632847786, "grad_norm": 7648.16796875, "lr": 1e-06, "elapsed_seconds": 10.040436583105475, "reward_margin": 1.7350273132324219}

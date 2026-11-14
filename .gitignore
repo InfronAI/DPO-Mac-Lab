@@ -1,0 +1,20 @@
+.venv/
+.cache/
+__pycache__/
+.pytest_cache/
+*.pyc
+.DS_Store
+outputs/
+multirun/
+wandb/
+artifacts/
+*.egg-info/
+*.tmp
+
+# Reproducible local weights remain on disk but are not source-control payloads.
+results/**/model/
+results/**/fixture_model/
+results/**/reward.pt
+results/**/value_head.pt
+
+.run.lock

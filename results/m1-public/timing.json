@@ -1,0 +1,7 @@
+{
+  "process_started_at_utc": "2026-11-14T01:41:32.279494+00:00",
+  "resource_samples": "resources.csv",
+  "rss_scope": "process RSS only; excludes some unified GPU allocations",
+  "observed_seconds": 1345.6119820838794,
+  "sampled_max_process_rss_bytes": 1198833664
+}
