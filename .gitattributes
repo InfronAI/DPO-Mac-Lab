@@ -1,0 +1,4 @@
+# Evidence receipts use byte hashes; preserve recorded line endings on checkout.
+results/** -text
+docs/media/** -text
+docs/UPSTREAM_README.md -text
